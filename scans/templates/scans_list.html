@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="pt-5 pb-5 text-center">
+<h1>BDDW SCANS</h1>
+</div>
+<table class="pt-4 table table-striped">
+    <thead>
+      <tr>
+        <th scope="col">ITEM #</th>
+        <th scope="col">LOCATION</th>
+        <th scope="col">TIME SCANNED</th>
+        <th scope="col">TIME UPLOADED</th>
+        <th scope="col">SCAN UUID</th>
+      </tr>
+    </thead>
+    <tbody>
+        {% for scan in scans  %}
+      <tr>
+        <th scope="row">{{scan.sku}}</th>
+        <td>{{scan.location}}</td>
+        <td>{{scan.time_scan}}</td>
+        <td>{{scan.time_upload}}</td>
+        <td>{{scan.scan_id}}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+
+{% endblock content %}
