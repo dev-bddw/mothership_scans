@@ -1,3 +1,4 @@
+from django.contrib.auth.decorators import login_required
 from django.shortcuts import HttpResponse, render
 from django.views.decorators.csrf import csrf_exempt
 from rest_framework.decorators import api_view
@@ -7,7 +8,7 @@ from .models import Scan
 from .serializers import ScanSerializer
 
 
-# Create your views here.
+@login_required
 def scans_list(request):
 
     return render(request, "scans_list.html", {"scans": Scan.objects.all()})
@@ -28,9 +29,9 @@ def create_scan_api_endpoint(request):
             scan = serializer.create(serializer.data)
 
             response_message = {
-                "Success": True,
-                "UUID": scan.scan_id,
-                "time uploaded": "TBI",
+                "success": True,
+                "scan_id": scan.scan_id,
+                "time_upload": scan.time_upload.strftime("%Y-%m-%dT%H:%M:%S.%f%z"),
             }
 
             jdata = JSONRenderer().render(response_message)
