@@ -30,6 +30,7 @@ def create_scan_api_endpoint(request):
             response_message = {
                 "Success": True,
                 "UUID": scan.scan_id,
+                "time uploaded": "TBI",
             }
 
             jdata = JSONRenderer().render(response_message)

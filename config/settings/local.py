@@ -36,6 +36,8 @@ EMAIL_BACKEND = env(
 INSTALLED_APPS += ["debug_toolbar"]  # noqa F405
 # https://django-debug-toolbar.readthedocs.io/en/latest/installation.html#middleware
 MIDDLEWARE += ["debug_toolbar.middleware.DebugToolbarMiddleware"]  # noqa F405
+MIDDLEWARE += ["silk.middleware.SilkyMiddleware"]  # noqa F405
+
 # https://django-debug-toolbar.readthedocs.io/en/latest/configuration.html#debug-toolbar-config
 DEBUG_TOOLBAR_CONFIG = {
     "DISABLE_PANELS": ["debug_toolbar.panels.redirects.RedirectsPanel"],
@@ -52,7 +54,10 @@ if env("USE_DOCKER") == "yes":
 # django-extensions
 # ------------------------------------------------------------------------------
 # https://django-extensions.readthedocs.io/en/latest/installation_instructions.html#configuration
-INSTALLED_APPS += ["django_extensions"]  # noqa F405
+INSTALLED_APPS += [
+    "django_extensions",
+    "silk",
+]  # noqa F405
 
 # Your stuff...
 # ------------------------------------------------------------------------------
