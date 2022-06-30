@@ -37,8 +37,8 @@ urlpatterns += [
     ),
 ]
 
-# SILKY
-urlpatterns += [path("silk/", include("silk.urls", namespace="silk"))]
+# # SILKY
+# urlpatterns += [path("silk/", include("silk.urls", namespace="silk"))]
 
 
 if settings.DEBUG:
