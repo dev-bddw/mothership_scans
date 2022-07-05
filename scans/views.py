@@ -11,7 +11,11 @@ from .serializers import ScanSerializer
 @login_required
 def scans_list(request):
 
-    return render(request, "scans_list.html", {"scans": Scan.objects.all()})
+    return render(
+        request,
+        "scans_list.html",
+        {"scans": Scan.objects.all().order_by("-time_upload")},
+    )
 
 
 @csrf_exempt
