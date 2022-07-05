@@ -14,7 +14,7 @@ def scans_list(request):
     return render(
         request,
         "scans_list.html",
-        {"scans": Scan.objects.all().order_by("time_upload")},
+        {"scans": Scan.objects.all().order_by("-time_upload")},
     )
 
 
