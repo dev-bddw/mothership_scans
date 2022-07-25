@@ -36,6 +36,7 @@ def create_scan_api_endpoint(request):
                 "success": True,
                 "scan_id": scan.scan_id,
                 "time_upload": scan.time_upload.strftime("%Y-%m-%dT%H:%M:%S.%f%z"),
+                "tracking": scan.tracking,
             }
 
             jdata = JSONRenderer().render(response_message)
