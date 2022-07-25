@@ -9,6 +9,7 @@
     <thead>
       <tr>
         <th scope="col">ITEM #</th>
+        <th scope="col">TRACKING #</th>
         <th scope="col">LOCATION</th>
         <th scope="col">TIME SCANNED</th>
         <th scope="col">TIME UPLOADED</th>
@@ -19,6 +20,7 @@
         {% for scan in scans  %}
       <tr>
         <th scope="row">{{scan.sku}}</th>
+        <td>{{scan.tracking}}
         <td>{{scan.location}}</td>
         <td>{{scan.time_scan}}</td>
         <td>{{scan.time_upload}}</td>
