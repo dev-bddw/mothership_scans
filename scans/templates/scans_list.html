@@ -23,11 +23,11 @@
         <td>{{scan.tracking}}
         {% if scan.location == '301' %}
         <td>FRANKFORD</td>
-        {% if scan.location == '201' %}
+        {% elif scan.location == '201' %}
         <td>RED LION</td>
-        {% if scan.location == '101' %}
+        {% elif scan.location == '101' %}
         <td>TEST</td>
-        {% if scan.location == '401' %}
+        {% elif scan.location == '401' %}
         <td>ERIE</td>
         {% else %}
         <td>{{scan.location}}</td>
