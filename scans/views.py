@@ -23,7 +23,7 @@ def search_scans(request):
     if request.method == "POST":
 
         query = request.POST.get("search")
-        scans = Scan.objects.filter(sku__startswith=query)
+        scans = Scan.objects.filter(sku__startswith=query).order_by("-time_upload")
 
         return render(request, "partials/search.html", {"scans": scans})
 
