@@ -1,18 +1,3 @@
-{% extends 'base.html' %}
-
-{% block content %}
-
-{% csrf_token %}
-
-<div class="pt-5 pb-5 text-center">
-<h1>BDDW SCANS</h1>
-</div>
-<input class="mb-3" type="search"
-       name="search" placeholder="search by sku"
-       hx-post="{% url 'search' %}"
-       hx-trigger="keyup changed delay:500ms, search"
-       hx-target="#search-results"
-       hx-swap="outerHTML">
 <table id="search-results" class="pt-4 table table-striped">
     <thead>
       <tr>
@@ -47,5 +32,3 @@
       {% endfor %}
     </tbody>
   </table>
-
-{% endblock content %}

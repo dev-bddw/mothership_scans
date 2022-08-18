@@ -7,10 +7,11 @@ from django.views.generic import TemplateView
 from drf_spectacular.views import SpectacularAPIView, SpectacularSwaggerView
 from rest_framework.authtoken.views import obtain_auth_token
 
-from scans.views import create_scan_api_endpoint, scans_list
+from scans.views import create_scan_api_endpoint, scans_list, search_scans
 
 urlpatterns = [
     path("", view=scans_list, name="home"),
+    path("search/", view=search_scans, name="search"),
     path("endpoint/", view=create_scan_api_endpoint, name="endpoint"),
     path(
         "about/", TemplateView.as_view(template_name="pages/about.html"), name="about"

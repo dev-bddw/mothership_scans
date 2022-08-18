@@ -18,6 +18,16 @@ def scans_list(request):
     )
 
 
+@login_required
+def search_scans(request):
+    if request.method == "POST":
+
+        query = request.POST.get("search")
+        scans = Scan.objects.filter(sku__startswith=query)
+
+        return render(request, "partials/search.html", {"scans": scans})
+
+
 @csrf_exempt
 @api_view(["GET", "POST"])
 def create_scan_api_endpoint(request):
