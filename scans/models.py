@@ -18,3 +18,6 @@ class Scan(models.Model):
 
     class Meta:
         ordering = ["time_scan"]
+
+    def __str__(self):
+        return f"SKU: {self.sku} LOC: {self.location} UID: {self.scan_id}"
