@@ -37,6 +37,10 @@
         <td>TEST</td>
         {% elif scan.location == 401 %}
         <td>ERIE</td>
+        {% elif scan.location == 501 %}
+        <td>NEW YORK</td>
+        {% elif scan.location == 601 %}
+        <td>LONDON</td>
         {% else %}
         <td>{{scan.location}}</td>
         {% endif %}
