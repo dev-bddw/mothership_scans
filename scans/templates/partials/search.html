@@ -14,17 +14,21 @@
       <tr>
         <th scope="row">{{scan.sku}}</th>
         <td>{{scan.tracking}}
-        {% if scan.location == 301 %}
-        <td>FRANKFORD</td>
-        {% elif scan.location == 201 %}
-        <td>RED LION</td>
-        {% elif scan.location == 101 %}
-        <td>TEST</td>
-        {% elif scan.location == 401 %}
-        <td>ERIE</td>
-        {% else %}
-        <td>{{scan.location}}</td>
-        {% endif %}
+          {% if scan.location == 301 %}
+          <td>FRANKFORD</td>
+          {% elif scan.location == 201 %}
+          <td>RED LION</td>
+          {% elif scan.location == 101 %}
+          <td>TEST</td>
+          {% elif scan.location == 401 %}
+          <td>ERIE</td>
+          {% elif scan.location == 501 %}
+          <td>NEW YORK</td>
+          {% elif scan.location == 601 %}
+          <td>LONDON</td>
+          {% else %}
+          <td>{{scan.location}}</td>
+          {% endif %}
         <td>{{scan.time_scan}}</td>
         <td>{{scan.time_upload}}</td>
         <td>{{scan.scan_id}}</td>
