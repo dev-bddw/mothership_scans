@@ -8,7 +8,7 @@
 <h1>BDDW SCANS</h1>
 </div>
 <input class="mb-3" type="search"
-       name="search" placeholder="search by sku"
+       name="search" placeholder="sku or scan uuid"
        hx-post="{% url 'search' %}"
        hx-trigger="keyup changed delay:500ms, search"
        hx-target="#search-results"
@@ -18,9 +18,19 @@
       <tr>
         <th scope="col">ITEM #</th>
         <th scope="col">TRACKING #</th>
-        <th scope="col">LOCATION</th>
-        <th scope="col">TIME SCANNED</th>
-        <th scope="col">TIME UPLOADED</th>
+        <th scope="col">LOCATION
+          <a href="{% url 'sorting' %}?sorting=-location">&#8639;</a>
+          <a href="{% url 'sorting' %}?sorting=location">&#8642;</a>
+
+        </th>
+        <th scope="col">TIME SCANNED
+          <a href="{% url 'sorting' %}?sorting=-time_scan">&#8639;</a>
+          <a href="{% url 'sorting' %}?sorting=time_scan">&#8642;</a>
+        </th>
+        <th scope="col">TIME UPLOADED
+          <a href="{% url 'sorting' %}?sorting=-time_upload">&#8639;</a>
+          <a href="{% url 'sorting' %}?sorting=time_upload">&#8642;</a>
+        </th>
         <th scope="col">SCAN UUID</th>
       </tr>
     </thead>

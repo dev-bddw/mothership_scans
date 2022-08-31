@@ -19,11 +19,29 @@ def scans_list(request):
 
 
 @login_required
+def scans_sorting(request):
+
+    sort_by = request.GET.get("sorting")
+
+    return render(
+        request,
+        "scans_list.html",
+        {"scans": Scan.objects.all().order_by(sort_by)},
+    )
+
+
+@login_required
 def search_scans(request):
     if request.method == "POST":
 
         query = request.POST.get("search")
         scans = Scan.objects.filter(sku__startswith=query).order_by("-time_upload")
+
+        if len(scans) == 0:
+
+            scans = Scan.objects.filter(scan_id__startswith=query).order_by(
+                "-time_upload"
+            )
 
         return render(request, "partials/search.html", {"scans": scans})
 
