@@ -19,17 +19,17 @@
         <th scope="col">ITEM #</th>
         <th scope="col">TRACKING #</th>
         <th scope="col">LOCATION
-          <a href="{% url 'sorting' %}?sorting=-location">&#8639;</a>
-          <a href="{% url 'sorting' %}?sorting=location">&#8642;</a>
+          <a href="{% url 'sorting' %}?sorting=-location"><span style="font-size: 14px;">&#x2191;</span></a>
+          <a href="{% url 'sorting' %}?sorting=location"><span style="font-size: 14px;">&#x2193;</span></a>
 
         </th>
         <th scope="col">TIME SCANNED
-          <a href="{% url 'sorting' %}?sorting=-time_scan">&#8639;</a>
-          <a href="{% url 'sorting' %}?sorting=time_scan">&#8642;</a>
+          <a href="{% url 'sorting' %}?sorting=-time_scan"><span style="font-size: 14px;">&#x2191;</span></a>
+          <a href="{% url 'sorting' %}?sorting=time_scan"><span style="font-size: 14px;">&#x2193;</span></a>
         </th>
         <th scope="col">TIME UPLOADED
-          <a href="{% url 'sorting' %}?sorting=-time_upload">&#8639;</a>
-          <a href="{% url 'sorting' %}?sorting=time_upload">&#8642;</a>
+          <a href="{% url 'sorting' %}?sorting=-time_upload"><span style="font-size: 14px;">&#x2191;</span></a>
+          <a href="{% url 'sorting' %}?sorting=time_upload"><span style="font-size: 14px;">&#x2193;</span></a>
         </th>
         <th scope="col">SCAN UUID</th>
       </tr>
@@ -37,7 +37,7 @@
     <tbody>
         {% for scan in scans  %}
       <tr>
-        <th scope="row"><a href="https://bddwskuapi.bddwapps.com/api/{{scan.sku}}/">{{scan.sku}}</a></th>
+        <th scope="row"><a href="{% url 'by-sku' scan.sku %}">{{scan.sku}}</a>
         <td>{{scan.tracking}}
         {% if scan.location == 301 %}
         <td>FRANKFORD</td>
@@ -56,7 +56,9 @@
         {% endif %}
         <td>{{scan.time_scan}}</td>
         <td>{{scan.time_upload}}</td>
-        <td>{{scan.scan_id}}</td>
+        <td>{{scan.scan_id}}
+          <a href="https://bddwskuapi.bddwapps.com/api/{{scan.sku}}/">...</a></th>
+        </td>
       </tr>
       {% endfor %}
     </tbody>

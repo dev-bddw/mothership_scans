@@ -46,6 +46,16 @@ def search_scans(request):
         return render(request, "partials/search.html", {"scans": scans})
 
 
+def return_scans_by_sku(request, item_sku):
+
+    return render(
+        request,
+        "scans_list.html",
+        {"scans": Scan.objects.filter(sku=item_sku).order_by("-time_upload")},
+    )
+
+
+
 @csrf_exempt
 @api_view(["GET", "POST"])
 def create_scan_api_endpoint(request):
