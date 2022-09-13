@@ -17,12 +17,10 @@ from scans.views import (
 
 urlpatterns = [
     path("", view=scans_list, name="home"),
+    path("endpoint/", view=create_scan_api_endpoint, name="endpoint"),
     path("sort/", view=scans_sorting, name="sorting"),
     path("search/", view=search_scans, name="search"),
-    path("<item_sku>/", view=return_scans_by_sku, name="by-sku"),
-
-
-    path("endpoint/", view=create_scan_api_endpoint, name="endpoint"),
+    path("by-sku/<item_sku>/", view=return_scans_by_sku, name="by-sku"),
     path(
         "about/", TemplateView.as_view(template_name="pages/about.html"), name="about"
     ),
