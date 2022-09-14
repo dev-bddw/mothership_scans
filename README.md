@@ -8,7 +8,6 @@ Exposes a secured API endpoint for recieving data related to BDDW products (iden
 
 Lists these records securely.
 
-
 This API endpoint returns a validation UUID. This code identifies scans, can assist with troubleshooting, etc. 
 
 For the purposes of this API -- scan records without UUIDs are considered invalid.
@@ -16,7 +15,10 @@ For the purposes of this API -- scan records without UUIDs are considered invali
 # api information
 
 The API expects the following:
+    import requests
+    from requests.structures import CaseInsensitiveDict
 
+    
             app_key = settings.APP_KEY
 
             scan_data = {
