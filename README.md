@@ -15,9 +15,7 @@ For the purposes of this API -- scan records without UUIDs are considered invali
 # api information
 
 The API expects the following:
-    import requests
-    from requests.structures import CaseInsensitiveDict
-
+            import requests
     
             app_key = settings.APP_KEY
 
@@ -30,7 +28,7 @@ The API expects the following:
 
             data_json = json.dumps(scan_data)
 
-            headers = CaseInsensitiveDict()
+            headers = requests.structures.CaseInsensitiveDict()
             headers["Accept"] = "application/json"
             headers["Content-type"] = "application/json"
             headers["Authorization"] = "Token {}".format(app_key)
