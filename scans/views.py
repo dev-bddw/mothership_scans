@@ -55,7 +55,6 @@ def return_scans_by_sku(request, item_sku):
     )
 
 
-
 @csrf_exempt
 @api_view(["GET", "POST"])
 def create_scan_api_endpoint(request):
