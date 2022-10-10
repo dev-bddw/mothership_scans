@@ -50,6 +50,7 @@ def all(request):
             ]
         }
 
-    response.update({"Access-Control-Allow-Origin": "*"})
+    json_response = JsonResponse(response, safe=False)
+    json_response.update({"Access-Control-Allow-Origin": "*"})
 
-    return JsonResponse(response, safe=False)
+    return json_response
