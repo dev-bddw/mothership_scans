@@ -34,21 +34,7 @@ def all(request):
 
     if len(response["data"]) < 1:
 
-        response = {
-            "data": [
-                {
-                    "type": "scans",
-                    "id": None,
-                    "attributes": {
-                        "sku": None,
-                        "tracking": None,
-                        "time_scan": None,
-                        "location": None,
-                        "time_upload": None,
-                    },
-                }
-            ]
-        }
+        response = {"data": None}
 
     json_response = JsonResponse(response, safe=False)
     json_response.headers["Access-Control-Allow-Origin"] = "*"
