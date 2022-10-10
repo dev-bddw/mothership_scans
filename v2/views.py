@@ -23,7 +23,7 @@ def all(request):
                 "attributes": {
                     "sku": s.sku,
                     "tracking": s.tracking,
-                    "time_scan": s.scan_id,
+                    "time_scan": s.time_scan,
                     "location": str(s.location),
                     "time_upload": s.time_upload,
                 },
