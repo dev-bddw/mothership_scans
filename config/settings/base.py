@@ -343,9 +343,3 @@ JAZZMIN_UI_TWEAKS = {
     },
     "actions_sticky_top": False,
 }
-
-
-CORS_ORIGIN_WHITELIST = (
-    "http://localhost:3000",
-    "http://localhost:8000",
-)
