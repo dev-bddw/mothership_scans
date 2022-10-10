@@ -130,8 +130,8 @@ AUTH_PASSWORD_VALIDATORS = [
 # ------------------------------------------------------------------------------
 # https://docs.djangoproject.com/en/dev/ref/settings/#middleware
 MIDDLEWARE = [
-    "django.middleware.security.SecurityMiddleware",
     "corsheaders.middleware.CorsMiddleware",
+    "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.locale.LocaleMiddleware",
     "django.middleware.common.CommonMiddleware",
@@ -344,12 +344,5 @@ JAZZMIN_UI_TWEAKS = {
     "actions_sticky_top": False,
 }
 
-CORS_ALLOWED_ORIGINS = [
-    "https://bddwskuapi.bddwapps.com",
-    "https://www.bddwscans.com",
-    "https://bddwscans.com",
-    "https://bddwskuapi.com",
-]
-CORS_ORIGIN_ALLOW_ALL = True
 
-ALLOWED_HOSTS = ["localhost", "https://bddwskuapi.bddwapps.com"]
+CORS_ALLOW_ALL_ORIGINS = True
