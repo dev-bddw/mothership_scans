@@ -349,9 +349,6 @@ CORS_ALLOWED_ORIGINS = [
     "https://www.bddwscans.com",
     "https://bddwscans.com",
     "https://bddwskuapi.com",
-    "http://localhost:3000",
-    "http://127.0.0.1:3000",
-    "http://localhost:8000",
 ]
 CORS_ORIGIN_ALLOW_ALL = True
 
