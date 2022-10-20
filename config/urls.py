@@ -9,7 +9,9 @@ from rest_framework.authtoken.views import obtain_auth_token
 
 from scans.views import (
     create_scan_api_endpoint,
+    return_scans_by_location,
     return_scans_by_sku,
+    return_scans_by_tn,
     scans_list,
     scans_sorting,
     search_scans,
@@ -22,6 +24,10 @@ urlpatterns = [
     path("sort/", view=scans_sorting, name="sorting"),
     path("search/", view=search_scans, name="search"),
     path("by-sku/<item_sku>/", view=return_scans_by_sku, name="by-sku"),
+    path(
+        "by-location/<int:location>/", view=return_scans_by_location, name="by-location"
+    ),
+    path("by-tn/<tn>/", view=return_scans_by_tn, name="by-tn"),
     path(
         "about/", TemplateView.as_view(template_name="pages/about.html"), name="about"
     ),

@@ -55,6 +55,24 @@ def return_scans_by_sku(request, item_sku):
     )
 
 
+def return_scans_by_tn(request, tn):
+
+    return render(
+        request,
+        "scans_list.html",
+        {"scans": Scan.objects.filter(tracking=tn).order_by("-time_upload")},
+    )
+
+
+def return_scans_by_location(request, location):
+
+    return render(
+        request,
+        "scans_list.html",
+        {"scans": Scan.objects.filter(location=location).order_by("-time_upload")},
+    )
+
+
 @csrf_exempt
 @api_view(["GET", "POST"])
 def create_scan_api_endpoint(request):
