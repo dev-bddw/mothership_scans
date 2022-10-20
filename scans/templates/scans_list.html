@@ -38,7 +38,7 @@
         {% for scan in scans  %}
       <tr>
         <th scope="row"><a href="{% url 'by-sku' scan.sku %}">{{scan.sku}}</a>
-        <td><a href="{% url 'by-tn' scan.tracking %}"> {{scan.tracking}} </a></td>
+        <td> {% if scan.tracking %} <a href="{% url 'by-tn' scan.tracking %}"> {{scan.tracking}} </a> {% else %} {% endif %}</td>
         {% if scan.location == 301 %}
         <td><a href="{% url 'by-location' scan.location %}">FRANKFORD</a></td>
         {% elif scan.location == 201 %}
@@ -59,7 +59,7 @@
         <td>{{scan.time_scan}}</td>
         <td>{{scan.time_upload}}</td>
         <td>{{scan.scan_id}}
-          <a href="https://bddwskuapi.bddwapps.com/api/{{scan.sku}}/">...</a></th>
+          <!-- <a href="https://bddwskuapi.bddwapps.com/api/{{scan.sku}}/">...</a></th> -->
         </td>
       </tr>
       {% endfor %}
