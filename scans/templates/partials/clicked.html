@@ -1,0 +1,50 @@
+<table id="search-results" class="pt-4 table table-striped">
+    <thead>
+        <tr>
+          <th scope="col">ITEM #</th>
+          <th scope="col">TRACKING #</th>
+          <th scope="col">LOCATION
+            <a href="{% url 'sorting' %}?sorting=-location"><span style="font-size: 14px;">&#x2191;</span></a>
+            <a href="{% url 'sorting' %}?sorting=location"><span style="font-size: 14px;">&#x2193;</span></a>
+
+          </th>
+          <th scope="col">TIME SCANNED
+            <a href="{% url 'sorting' %}?sorting=-time_scan"><span style="font-size: 14px;">&#x2191;</span></a>
+            <a href="{% url 'sorting' %}?sorting=time_scan"><span style="font-size: 14px;">&#x2193;</span></a>
+          </th>
+          <th scope="col">TIME UPLOADED
+            <a href="{% url 'sorting' %}?sorting=-time_upload"><span style="font-size: 14px;">&#x2191;</span></a>
+            <a href="{% url 'sorting' %}?sorting=time_upload"><span style="font-size: 14px;">&#x2193;</span></a>
+          </th>
+          <th scope="col">SCAN UUID</th>
+        </tr>
+      </thead>
+
+    <tbody>
+      {% for scan in scans  %}
+      <tr>
+        <th scope="row"><a href="{% url 'by-sku' scan.sku %}">{{scan.sku}}</a>
+        <td> {% if scan.tracking %} <a href="{% url 'by-tn' scan.tracking %}"> {{scan.tracking}} </a> {% else %} {% endif %}</td>
+        {% if scan.location == 301 %}
+        <td><a href="{% url 'by-location' scan.location %}">FRANKFORD</a></td>
+        {% elif scan.location == 201 %}
+        <td><a href="{% url 'by-location' scan.location %}">RED LION</a></td>
+        {% elif scan.location == 101 %}
+        <td>TEST</td>
+        {% elif scan.location == 401 %}
+        <td><a href="{% url 'by-location' scan.location %}">ERIE</a></td>
+        {% elif scan.location == 501 %}
+        <td><a href="{% url 'by-location' scan.location %}">NEW YORK</a></td>
+        {% elif scan.location == 601 %}
+        <td><a href="{% url 'by-location' scan.location %}">LONDON - MOUNT</a></td>
+        {% elif scan.location == 602 %}
+        <td><a href="{% url 'by-location' scan.location %}">LONDON - VYNER</a></td>
+        {% else %}
+        <td><a href="{% url 'by-location' scan.location %}">{{scan.location}}</a></td>
+        {% endif %}
+        <td>{{scan.time_scan}}</td>
+        <td>{{scan.time_upload}}</td>
+        <td>{{scan.scan_id}}</td>
+      </tr>
+      {% endfor %}    </tbody>
+  </table>

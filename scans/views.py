@@ -48,28 +48,55 @@ def search_scans(request):
 
 def return_scans_by_sku(request, item_sku):
 
+    order_by = (
+        "-time_upload"
+        if request.GET.get("sorting") is None
+        else request.GET.get("sorting")
+    )
+
     return render(
         request,
-        "scans_list.html",
-        {"scans": Scan.objects.filter(sku=item_sku).order_by("-time_upload")},
+        "by_sku.html",
+        {
+            "scans": Scan.objects.filter(sku=item_sku).order_by(order_by),
+            "sku": item_sku,
+        },
     )
 
 
 def return_scans_by_tn(request, tn):
 
+    order_by = (
+        "-time_upload"
+        if request.GET.get("sorting") is None
+        else request.GET.get("sorting")
+    )
+
     return render(
         request,
-        "scans_list.html",
-        {"scans": Scan.objects.filter(tracking=tn).order_by("-time_upload")},
+        "by_tracking.html",
+        {
+            "scans": Scan.objects.filter(tracking=tn).order_by(order_by),
+            "tn": tn,
+        },
     )
 
 
 def return_scans_by_location(request, location):
 
+    order_by = (
+        "-time_upload"
+        if request.GET.get("sorting") is None
+        else request.GET.get("sorting")
+    )
+
     return render(
         request,
-        "scans_list.html",
-        {"scans": Scan.objects.filter(location=location).order_by("-time_upload")},
+        "by_location.html",
+        {
+            "scans": Scan.objects.filter(location=location).order_by(order_by),
+            "location": location,
+        },
     )
 
 
