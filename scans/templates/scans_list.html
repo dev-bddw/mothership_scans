@@ -7,12 +7,19 @@
 <div class="pt-5 pb-5 text-center">
 <h1>BDDW SCANS</h1>
 </div>
-<input class="mb-3" type="search"
-       name="search" placeholder="sku or scan uuid"
-       hx-post="{% url 'search' %}"
-       hx-trigger="keyup changed delay:500ms, search"
-       hx-target="#search-results"
-       hx-swap="outerHTML">
+<div class="row">
+  <div class="col-3">
+    <input class="mb-3" type="search"
+    name="search" placeholder="sku or scan uuid"
+    hx-post="{% url 'search' %}"
+    hx-trigger="keyup changed delay:500ms, search"
+    hx-target="#search-results"
+    hx-swap="outerHTML">
+  </div>
+  <div class="col">
+    <a style="text-decoration: underline; font-size: 22px" href="{% url 'home' %}">RETURN HOME</a>
+  </div>
+</div>
 <table id="search-results" class="pt-4 table table-striped">
     <thead>
       <tr>
