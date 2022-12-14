@@ -1,3 +1,6 @@
+import csv
+import datetime
+
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import HttpResponse, render
 from django.views.decorators.csrf import csrf_exempt
@@ -127,3 +130,51 @@ def create_scan_api_endpoint(request):
         jdata = JSONRenderer().render(serializer.errors)
 
         return HttpResponse(jdata, content_type="application/json")
+
+
+@login_required
+def export_scans(request):
+    date = datetime.datetime.now()
+
+    response = HttpResponse(
+        content_type="text/csv",
+        headers={
+            "Content-Disposition": f'attachment; filename="BDDW_SCANS_{date}.csv"'
+        },
+    )
+
+    writer = csv.writer(response)
+
+    scans = (
+        Scan.objects.all()
+        .order_by("-time_upload")
+        .values_list(
+            "sku",
+            "tracking",
+            "location",
+            "time_upload",
+            "time_scan",
+            "scan_id",
+        )
+    )
+    writer.writerow(
+        ["SKU", "TRACKING", "LOCATION", "TIME SCAN", "TIME UPLOAD", "SCAN ID"]
+    )
+
+    loc = {
+        "301": "FRANKFORD",
+        "201": "RED LION",
+        "101": "TEST",
+        "401": "ERIE",
+        "501": "NEW YORK",
+        "601": "LONDON - MOUNT",
+        "602": "LNDON - VYNER",
+    }
+
+    for record in scans:
+        record = list(record)
+        record[2] = loc.get(str(record[2]))
+
+        writer.writerow(record)
+
+    return response
