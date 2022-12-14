@@ -168,7 +168,7 @@ def export_scans(request):
         "401": "ERIE",
         "501": "NEW YORK",
         "601": "LONDON - MOUNT",
-        "602": "LNDON - VYNER",
+        "602": "LONDON - VYNER",
     }
 
     for record in scans:
