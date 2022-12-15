@@ -17,7 +17,17 @@ class Scan(models.Model):
     time_upload = models.DateTimeField(auto_now_add=True)
 
     class Meta:
-        ordering = ["time_scan"]
+        ordering = ["-time_scan"]
 
     def __str__(self):
         return f"SKU: {self.sku} LOC: {self.location} UID: {self.scan_id}"
+
+    def is_latest(self):
+
+        if self.tracking in [None, ""]:
+
+            return Scan.objects.filter(sku=self.sku).first() == self
+
+        else:
+
+            return Scan.objects.filter(tracking=self.tracking).first() == self

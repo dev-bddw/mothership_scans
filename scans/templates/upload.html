@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+{% csrf_token %}
+
+<div class="pt-5 pb-5 text-center">
+<h1>BDDW SCANS</h1>
+</div>
+
+<div>
+	<form action="{% url 'upload' %}" method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+            <input type="file" id="file" name="file">
+            <small>Only accepts CSV files</small>
+            <button type="submit">Upload</button>
+        </form>
+</div>
+{% endblock content %}
