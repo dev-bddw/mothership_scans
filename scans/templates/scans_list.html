@@ -5,8 +5,9 @@
 {% csrf_token %}
 
 <div class="pt-5 pb-5 text-center">
-<h1>BDDW SCANS</h1>
+		<h1>BDDW SCANS</h1>
 </div>
+
 <div class="row">
   <div class="col-3">
     <input class="mb-3" type="search"
@@ -16,13 +17,10 @@
     hx-target="#search-results"
     hx-swap="outerHTML">
   </div>
-  <div class="col">
-
-  </div>
 </div>
 <div>
 	<a class="" style="text-decoration: underline; font-size: 14px" href="{% url 'export' %}">EXPORT ALL</a>
-	<a class="p-5" style="text-decoration: underline; font-size: 14px" href="{% url 'export-latest' %}">EXPORT LAST UNIQUE (TN, SKU)</a>
+	<a class="px-5" style="text-decoration: underline; font-size: 14px" href="{% url 'export-latest' %}">EXPORT LAST UNIQUE (TN, SKU)</a>
 </div>
 </div>
 <div class="container">
