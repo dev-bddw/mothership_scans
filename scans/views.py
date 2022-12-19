@@ -148,8 +148,8 @@ def export_scans(request):
         "sku",
         "tracking",
         "location",
-        "time_upload",
         "time_scan",
+        "time_upload",
         "scan_id",
     )
     writer.writerow(
