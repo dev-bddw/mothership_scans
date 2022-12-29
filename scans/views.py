@@ -117,11 +117,11 @@ def create_scan_api_endpoint(request):
 
         for scan in terminal_data["data"]:
 
-            new_scan = Scan.objects.update_or_create(
+            new_scan, updated = Scan.objects.update_or_create(
                 scan_id=scan["id"], defaults=scan["attributes"]
             )
 
-            response_package.append(
+            response_package["data"].append(
                 {
                     "type": "scans",
                     "scan_id": new_scan.scan_id,
@@ -136,11 +136,11 @@ def create_scan_api_endpoint(request):
             bin_package["data"].append(
                 {
                     "type": "items",
-                    "id": scan.tracking,
+                    "id": new_scan.tracking,
                     "attributes": {
-                        "sku": scan.sku,
-                        "location": scan.readable_location(),
-                        "last_scan": scan.scan_id,
+                        "sku": new_scan.sku,
+                        "location": new_scan.readable_location(),
+                        "last_scan": new_scan.scan_id,
                     },
                 }
             )
