@@ -2,8 +2,9 @@ import csv
 import datetime
 import io
 
+from django.conf import settings
 from django.contrib.auth.decorators import login_required
-from django.shortcuts import HttpResponse, render
+from django.shortcuts import HttpResponse, JsonResponse, render
 from django.views.decorators.csrf import csrf_exempt
 from rest_framework.decorators import api_view
 from rest_framework.renderers import JSONRenderer
@@ -112,6 +113,8 @@ def create_scan_api_endpoint(request):
 
         serializer = ScanSerializer(data=jdata)
 
+        bin_package = {"data": []}
+
         if serializer.is_valid():
 
             scan = serializer.create(serializer.data)
@@ -123,10 +126,27 @@ def create_scan_api_endpoint(request):
                 "tracking": scan.tracking,
             }
 
-            jdata = JSONRenderer().render(response_message)
-            return HttpResponse(jdata, content_type="application/json")
+            bin_package["data"].append(
+                {
+                    "type": "items",
+                    "id": scan.tracking,
+                    "attributes": {
+                        "sku": scan.sku,
+                        "location": scan.readable_location(),
+                        "last_scan": scan.scan_id,
+                    },
+                }
+            )
 
-        jdata = JSONRenderer().render(serializer.errors)
+            rdata = JSONRenderer().render(response_message)
+
+            return JsonResponse({"sent_to_bin": bin_package, "bddw_scans_r": rdata})
+
+        else:
+
+            jdata = JSONRenderer().render(serializer.errors)
+
+        print(bin_package)
 
         return HttpResponse(jdata, content_type="application/json")
 

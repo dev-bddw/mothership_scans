@@ -16,11 +16,27 @@ class Scan(models.Model):
     location = models.IntegerField()
     time_upload = models.DateTimeField(auto_now_add=True)
 
+    bin_success = models.BooleanField(default=False)
+
     class Meta:
         ordering = ["-time_scan"]
 
     def __str__(self):
         return f"SKU: {self.sku} LOC: {self.location} UID: {self.scan_id}"
+
+    def readable_location(self):
+
+        locations = {
+            "301": "FRANKFORD",
+            "201": "RED LION",
+            "101": "TEST",
+            "401": "ERIE",
+            "501": "NEW YORK",
+            "601": "LONDON - MOUNT",
+            "602": "LONDON - VYNER",
+        }
+
+        return locations[str(self.location)]
 
     def is_latest(self):
 

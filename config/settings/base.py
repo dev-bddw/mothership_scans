@@ -305,6 +305,17 @@ SPECTACULAR_SETTINGS = {
 }
 # Your stuff...
 # ------------------------------------------------------------------------------
+
+# BIN API SETTINGS
+
+BIN_API_ENDPOINT = env(
+    "BIN_API_ENDPOINT", default="https://bddw.styleexpo.com/api/v1/products"
+)
+
+
+# JAZZMIN
+
+
 JAZZMIN_SETTINGS = {
     "site_logo": "images/bddwlogo.svg",
     "welcome_sign": "WE ARE SCANS",
