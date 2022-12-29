@@ -4,7 +4,8 @@ import io
 
 from django.conf import settings
 from django.contrib.auth.decorators import login_required
-from django.shortcuts import HttpResponse, JsonResponse, render
+from django.http import HttpResponse, JsonResponse
+from django.shortcuts import render
 from django.views.decorators.csrf import csrf_exempt
 from rest_framework.decorators import api_view
 from rest_framework.renderers import JSONRenderer
@@ -109,22 +110,28 @@ def create_scan_api_endpoint(request):
 
     if request.method == "POST":
 
-        jdata = request.data
+        terminal_data = request.data
 
-        serializer = ScanSerializer(data=jdata)
-
+        response_package = {"data": []}
         bin_package = {"data": []}
 
-        if serializer.is_valid():
+        for scan in terminal_data["data"]:
 
-            scan = serializer.create(serializer.data)
+            new_scan = Scan.objects.update_or_create(
+                scan_id=scan["id"], defaults=scan["attributes"]
+            )
 
-            response_message = {
-                "success": True,
-                "scan_id": scan.scan_id,
-                "time_upload": scan.time_upload.strftime("%Y-%m-%dT%H:%M:%S.%f%z"),
-                "tracking": scan.tracking,
-            }
+            response_package.append(
+                {
+                    "type": "scans",
+                    "scan_id": new_scan.scan_id,
+                    "attributes": {
+                        "time_upload": new_scan.time_upload.strftime(
+                            "%Y-%m-%dT%H:%M:%S.%f%z"
+                        ),
+                    },
+                }
+            )
 
             bin_package["data"].append(
                 {
@@ -138,17 +145,7 @@ def create_scan_api_endpoint(request):
                 }
             )
 
-            rdata = JSONRenderer().render(response_message)
-
-            return JsonResponse({"sent_to_bin": bin_package, "bddw_scans_r": rdata})
-
-        else:
-
-            jdata = JSONRenderer().render(serializer.errors)
-
-        print(bin_package)
-
-        return HttpResponse(jdata, content_type="application/json")
+        return JsonResponse(response_package)
 
 
 @login_required
