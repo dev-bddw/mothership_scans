@@ -124,7 +124,7 @@ def create_scan_api_endpoint(request):
             response_package["data"].append(
                 {
                     "type": "scans",
-                    "scan_id": new_scan.scan_id,
+                    "scan_id": str(new_scan.scan_id),
                     "attributes": {
                         "time_upload": new_scan.time_upload.strftime(
                             "%Y-%m-%dT%H:%M:%S.%f%z"
