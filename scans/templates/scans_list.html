@@ -43,6 +43,7 @@
 				  <a href="{% url 'sorting' %}?sorting=time_upload"><span style="font-size: 14px;">&#x2193;</span></a>
 				</th>
 				<th scope="col">SCAN UUID</th>
+				<th scope="col">BIN UPDATED</th>
 			  </tr>
 			</thead>
 			<tbody>
@@ -69,9 +70,8 @@
 				{% endif %}
 				<td>{{scan.time_scan}}</td>
 				<td>{{scan.time_upload}}</td>
-				<td>{{scan.scan_id}}
-				  <!-- <a href="https://bddwskuapi.bddwapps.com/api/{{scan.sku}}/">...</a></th> -->
-				</td>
+				<td>{{scan.scan_id}}</td>
+				<td>{{scan.bin_success}}</td>
 			  </tr>
 			  {% endfor %}
 			</tbody>

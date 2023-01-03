@@ -1,12 +1,15 @@
 import csv
 import datetime
 import io
+import json
 
+import requests
 from django.conf import settings
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse, JsonResponse
 from django.shortcuts import render
 from django.views.decorators.csrf import csrf_exempt
+from requests.structures import CaseInsensitiveDict
 from rest_framework.decorators import api_view
 from rest_framework.renderers import JSONRenderer
 
@@ -107,12 +110,20 @@ def return_scans_by_location(request, location):
 @csrf_exempt
 @api_view(["GET", "POST"])
 def create_scan_api_endpoint(request):
+    """
+    endpoint for terminal_scan data
+    data is processed here, saved to mothership,
+    then forwarded to BIN_API_ENDPOINT
+    where response is evaluated for success
+    and mothership_scan record is updated based on success
+    other notes: we are processing all at once at the time of scan upload, should be moved to a task q
+    """
 
     if request.method == "POST":
 
         terminal_data = request.data
 
-        response_package = {"data": []}
+        terminal_response_package = {"data": []}
         bin_package = {"data": []}
 
         for scan in terminal_data["data"]:
@@ -121,10 +132,10 @@ def create_scan_api_endpoint(request):
                 scan_id=scan["id"], defaults=scan["attributes"]
             )
 
-            response_package["data"].append(
+            terminal_response_package["data"].append(
                 {
                     "type": "scans",
-                    "scan_id": str(new_scan.scan_id),
+                    "id": str(new_scan.scan_id),
                     "attributes": {
                         "time_upload": new_scan.time_upload.strftime(
                             "%Y-%m-%dT%H:%M:%S.%f%z"
@@ -136,16 +147,64 @@ def create_scan_api_endpoint(request):
             bin_package["data"].append(
                 {
                     "type": "items",
-                    "id": new_scan.tracking,
+                    "id": new_scan.tracking.split("-")[1],
                     "attributes": {
                         "sku": new_scan.sku,
                         "location": new_scan.readable_location(),
-                        "last_scan": new_scan.scan_id,
+                        "last_scan": str(new_scan.scan_id),
                     },
                 }
             )
 
-        return JsonResponse(response_package)
+        def create_and_send(bin_package):
+            """
+            create and send to bin from list of dicts
+            """
+            headers = CaseInsensitiveDict()
+            headers["Accept"] = "application/json"
+            headers["Content-type"] = "application/json"
+            headers["Authorization"] = "Bearer {}".format(settings.BIN_KEY)
+            payload = json.dumps(bin_package)
+
+            return requests.patch(
+                settings.BIN_API_ENDPOINT, data=payload, headers=headers
+            )
+
+        def process_for_errors(bin_response):
+            """
+            eval bin response for errors
+            chage scan records based on errors
+            """
+
+            if bin_response.status_code == 200:
+
+                if bin_response.json() == {"errors": []}:
+                    [
+                        Scan.objects.filter(scan_id=str(x["id"])).update(
+                            bin_success=True
+                        )
+                        for x in terminal_data["data"]
+                    ]
+                else:
+                    r = bin_response.json()
+                    for x in r["errors"]:
+                        terminal_data["data"].remove(x["attributes"]["source"])
+                        [
+                            Scan.objects.filter(scan_id=str(x["id"])).update(
+                                bin_success=True
+                            )
+                            for x in terminal_data["data"]
+                        ]
+
+                return bin_response
+
+        process_for_errors(create_and_send(bin_package))
+
+        return JsonResponse(terminal_response_package)
+
+    else:
+
+        return JsonResponse({"errors": ["This endpoint requires POST."]})
 
 
 @login_required
