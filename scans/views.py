@@ -121,12 +121,12 @@ def create_scan_api_endpoint(request):
 
     if request.method == "POST":
 
-        terminal_data = request.data
+        terminal_data = request.data["data"]
 
         terminal_response_package = {"data": []}
         bin_package = {"data": []}
 
-        for scan in terminal_data["data"]:
+        for scan in terminal_data:
 
             new_scan, updated = Scan.objects.update_or_create(
                 scan_id=scan["id"], defaults=scan["attributes"]
@@ -188,17 +188,17 @@ def create_scan_api_endpoint(request):
                 else:
                     r = bin_response.json()
                     for x in r["errors"]:
-                        terminal_data["data"].remove(x["attributes"]["source"])
+                        terminal_data.remove(x["attributes"]["source"])
                         [
                             Scan.objects.filter(scan_id=str(x["id"])).update(
                                 bin_success=True
                             )
-                            for x in terminal_data["data"]
+                            for x in terminal_data
                         ]
 
                 return bin_response
 
-        # process_for_errors(create_and_send(bin_package))
+        process_for_errors(create_and_send(bin_package))
 
         return JsonResponse(terminal_response_package)
 
