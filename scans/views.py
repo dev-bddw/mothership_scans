@@ -175,7 +175,7 @@ def create_scan_api_endpoint(request):
             eval bin response for errors
             chage scan records based on errors
             """
-
+            print(bin_response)
             if bin_response.status_code == 200:
 
                 if bin_response.json() == {"errors": []}:
