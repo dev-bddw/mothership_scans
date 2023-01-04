@@ -198,7 +198,7 @@ def create_scan_api_endpoint(request):
 
                 return bin_response
 
-        process_for_errors(create_and_send(bin_package))
+        # process_for_errors(create_and_send(bin_package))
 
         return JsonResponse(terminal_response_package)
 
