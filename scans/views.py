@@ -175,7 +175,6 @@ def create_scan_api_endpoint(request):
             eval bin response for errors
             chage scan records based on errors
             """
-            print(bin_response.json())
             if bin_response.status_code == 200:
 
                 if bin_response.json() == {"errors": []}:
@@ -183,23 +182,25 @@ def create_scan_api_endpoint(request):
                         Scan.objects.filter(scan_id=str(x["id"])).update(
                             bin_success=True
                         )
-                        for x in terminal_data["data"]
+                        for x in terminal_data
                     ]
                 else:
                     r = bin_response.json()
-                    for x in r["errors"]:
-                        terminal_data.remove(x["attributes"]["source"])
-                        [
-                            Scan.objects.filter(scan_id=str(x["id"])).update(
-                                bin_success=True
-                            )
-                            for x in terminal_data
-                        ]
-
+                    [
+                        Scan.objects.filter(scan_id=str(x["id"])).update(
+                            bin_success=True
+                        )
+                        for x in terminal_data
+                    ]
+                    [
+                        Scan.objects.filter(
+                            scan_id=str(y["source"]["attributes"]["last_scan"])
+                        ).update(bin_success=False)
+                        for y in r["errors"]
+                    ]
                 return bin_response
 
         process_for_errors(create_and_send(bin_package))
-
         return JsonResponse(terminal_response_package)
 
     else:
