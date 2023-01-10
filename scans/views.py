@@ -247,7 +247,7 @@ def create_scan_api_endpoint_v2(request):
                     )
 
         else:
-            process_result == "BIN UNREACHABLE"
+            process_result = "BIN UNREACHABLE"
             [
                 Fail.objects.create(
                     scan=x.scan_id,
@@ -256,7 +256,7 @@ def create_scan_api_endpoint_v2(request):
                 )
                 for x in Scan.objects.filter(batch_id=batch_id)
             ]
-
+        print(process_result)
         return JsonResponse(for_processing["terminal_response"])
 
     if request.method != "POST":
