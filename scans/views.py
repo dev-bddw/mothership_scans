@@ -250,7 +250,7 @@ def create_scan_api_endpoint_v2(request):
             process_result = "BIN UNREACHABLE"
             [
                 Fail.objects.create(
-                    scan=x.scan_id,
+                    scan=Scan.objects.get(scan_id=x.scan_id),
                     title="Response Error",
                     detail=f"{response.status_code}",
                 )
