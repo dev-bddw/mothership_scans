@@ -219,7 +219,7 @@ def create_scan_api_endpoint_v2(request):
                 Scan.objects.filter(batch_id=batch_id).update(bin_success=True)
 
                 [
-                    Success.objects.create(scan=x)
+                    Success.objects.create(scan=x, batch_id=batch_id)
                     for x in Scan.objects.filter(batch_id=batch_id)
                 ]
 
@@ -243,7 +243,10 @@ def create_scan_api_endpoint_v2(request):
                         scan_id=str(y["source"]["attributes"]["last_scan"])
                     )
                     Fail.objects.create(
-                        scan=this_scan, title=y["title"], detail=y["detail"]
+                        scan=this_scan,
+                        batch_id=batch_id,
+                        title=y["title"],
+                        detail=y["detail"],
                     )
 
         else:
