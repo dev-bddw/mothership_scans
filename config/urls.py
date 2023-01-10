@@ -8,7 +8,9 @@ from drf_spectacular.views import SpectacularAPIView, SpectacularSwaggerView
 from rest_framework.authtoken.views import obtain_auth_token
 
 from scans.views import (
+    bin_api_view,
     create_scan_api_endpoint,
+    create_scan_api_endpoint_v2,
     export_last_scans,
     export_scans,
     return_scans_by_location,
@@ -22,7 +24,7 @@ from scans.views import (
 
 urlpatterns = [
     path("", view=scans_list, name="home"),
-    path("endpoint/", view=create_scan_api_endpoint, name="endpoint"),
+    path("endpoint/", view=create_scan_api_endpoint_v2, name="endpoint"),
     path("csv/", view=export_scans, name="export"),
     path("csv/uploads/", view=upload_csv, name="upload"),
     path("csv/export-latest", view=export_last_scans, name="export-latest"),
@@ -36,6 +38,7 @@ urlpatterns = [
     path(
         "about/", TemplateView.as_view(template_name="pages/about.html"), name="about"
     ),
+    path("api-view/", view=bin_api_view, name="api_view"),
     # Django Admin, use {% url 'admin:index' %}
     path(settings.ADMIN_URL, admin.site.urls),
     # User management
@@ -57,10 +60,6 @@ urlpatterns += [
         name="api-docs",
     ),
 ]
-
-# # SILKY
-# urlpatterns += [path("silk/", include("silk.urls", namespace="silk"))]
-
 
 if settings.DEBUG:
     # This allows the error pages to be debugged during development, just visit

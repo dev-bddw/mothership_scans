@@ -20,7 +20,7 @@
 </div>
 <div>
 	<a class="" style="text-decoration: underline; font-size: 14px" href="{% url 'export' %}">EXPORT ALL</a>
-	<a class="px-5" style="text-decoration: underline; font-size: 14px" href="{% url 'export-latest' %}">EXPORT LAST UNIQUE (TN, SKU)</a>
+	<a class="px-5" style="text-decoration: underline; font-size: 14px" href="{% url 'export-latest' %}">EXPORT LAST UNIQUE (BY TN)</a>
 </div>
 </div>
 <div class="container">
@@ -71,7 +71,9 @@
 				<td>{{scan.time_scan}}</td>
 				<td>{{scan.time_upload}}</td>
 				<td>{{scan.scan_id}}</td>
-				<td>{{scan.bin_success}}</td>
+				<td>{% if scan.bin_success == True %}<span style="color: green">&#10004;</span>
+						{%else%}<span style="color: red">&#x2715;</span>{% endif %}
+				</td>
 			  </tr>
 			  {% endfor %}
 			</tbody>

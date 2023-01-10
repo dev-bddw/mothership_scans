@@ -1,0 +1,62 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+{% csrf_token %}
+
+<div class="pt-5 pb-5 text-center">
+		<h1>BDDWINV API CALLS STATUS</h1>
+</div>
+
+<div class="container">
+		<div style="font-size: 12px"  class="row">
+				<div class="col">
+						<h4>SUCCEEDED</h4>
+						<table style="background-color: #ebf5e9" id="search-results" class="pt-4 table table-striped">
+							<thead>
+							  <tr>
+								<th scope="col">id</th>
+								<th scope="col">tracking</th>
+								<th scope="col">time</th>
+							  </tr>
+							</thead>
+							<tbody>
+									{% for success in successes %}
+											<tr>
+											<td>{{success.scan.scan_id}}</td>
+											<td>{{success.scan.tracking}}</td>
+											<td>{{success.time}}</td>
+											<td></td>
+											<td></td>
+											</tr>
+									{% endfor %}
+							</tbody>						  </table>
+				</div>
+
+				<div class="col-8">
+						<h4>FAILED</h4>
+						<table style="background-color: #fcf0f2"  id="search-results" class="pt-4 table table-striped">
+							<thead>
+							  <tr>
+								<th scope="col">SCAN ID</th>
+								<th scope="col">tracking</th>
+								<th scope="col">time</th>
+								<th scope="col">error</th>
+								<th scope="col">details</th>
+							  </tr>
+							</thead>
+							<tbody>
+									{% for fail in fails %}
+											<tr>
+											<td>{{fail.scan.scan_id}}</td>
+											<td>{{fail.scan.tracking}}</td>
+											<td>{{fail.time}}</td>
+											<td>{{fail.title}}</td>
+											<td>{{fail.detail}}</td>
+											</tr>
+									{% endfor %}
+							</tbody>
+						  </table>
+				</div>
+</div>
+{% endblock content %}

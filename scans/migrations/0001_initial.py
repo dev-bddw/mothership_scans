@@ -8,21 +8,28 @@ class Migration(migrations.Migration):
 
     initial = True
 
-    dependencies = [
-    ]
+    dependencies = []
 
     operations = [
         migrations.CreateModel(
-            name='Scan',
+            name="Scan",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('sku', models.CharField(max_length=200)),
-                ('time_scan', models.DateTimeField()),
-                ('scan_id', models.UUIDField(default=uuid.uuid4)),
-                ('time_upload', models.DateTimeField(auto_now_add=True)),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("sku", models.CharField(max_length=200)),
+                ("time_scan", models.DateTimeField()),
+                ("scan_id", models.UUIDField(default=uuid.uuid4)),
+                ("time_upload", models.DateTimeField(auto_now_add=True)),
             ],
             options={
-                'ordering': ['time_scan'],
+                "ordering": ["time_scan"],
             },
         ),
     ]

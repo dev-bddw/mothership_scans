@@ -356,3 +356,13 @@ JAZZMIN_UI_TWEAKS = {
 }
 
 CORS_ORIGIN_ALLOW_ALL = True
+
+LOCATION_CODES = {
+    "FRANKFORD": 301,
+    "RED LION": 201,
+    "TEST": 101,
+    "ERIE": 401,
+    "NEW YORK": 501,
+    "LONDON - MOUNT": 601,
+    "LONDON - VYNER": 602,
+}

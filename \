@@ -1,5 +1,0 @@
-# General
-# ------------------------------------------------------------------------------
-USE_DOCKER=yes
-IPYTHONDIR=/app/.ipython
-BIN_KEY=7eb775f42f33c78aa9c4eedd73e8f2a77588cf6f
