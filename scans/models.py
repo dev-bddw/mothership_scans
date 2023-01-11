@@ -81,7 +81,7 @@ class Fail(models.Model):
             headers=headers,
         )
 
-        if response.json() == {"data": []}:
+        if response.json() == {"errors": []}:
 
             scan = Scan.objects.get(scan_id=self.scan.id)
             scan.update(bin_success=True)
@@ -89,11 +89,16 @@ class Fail(models.Model):
             Success.objects.create(scan=scan, batch_id=batch_id)
             return True
 
-        else:
+        elif response.json() != {"errors": []} and response.status_code == 200:
             error_response = response.json()["errors"][0]
             self.title = error_response["title"]
             self.detail = error_response["detail"]
             self.save()
+
+            return False
+
+        else:
+
             return False
 
 
