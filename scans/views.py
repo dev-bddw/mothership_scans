@@ -168,7 +168,6 @@ def create_scan_api_endpoint_v2(request):
         # convert terminal data to scan records
         for scan in for_processing["data_from_terminal"]:
             try:
-                print(scan["attributes"])
                 defaults = scan["attributes"]
                 defaults.update({"batch_id": batch_id, "scan_id": scan["id"]})
                 Scan(**defaults).save()
@@ -217,6 +216,7 @@ def create_scan_api_endpoint_v2(request):
         headers["Authorization"] = "Bearer {}".format(settings.BIN_KEY)
 
         # send request
+        print(json.dumps(for_processing["bin_request_body"]))
         response = requests.patch(
             settings.BIN_API_ENDPOINT,
             data=json.dumps(for_processing["bin_request_body"]),
