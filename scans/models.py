@@ -81,24 +81,26 @@ class Fail(models.Model):
             headers=headers,
         )
 
-        if response.json() == {"errors": []}:
+        if response.status_code == 200:
 
-            self.scan.bin_success = True
-            self.title = "RESOLVED"
-            self.detail = "Success after resend"
-            self.scan.save()
-            self.save()
-            batch_id = random.randint(0, 10000)
-            Success.objects.create(scan=self.scan, batch_id=batch_id)
-            return True
+            if response.json() == {"errors": []}:
 
-        elif response.json() != {"errors": []} and response.status_code == 200:
-            error_response = response.json()["errors"][0]
-            self.title = error_response["title"]
-            self.detail = error_response["detail"]
-            self.save()
+                self.scan.bin_success = True
+                self.title = "RESOLVED"
+                self.detail = "Success after resend"
+                self.scan.save()
+                self.save()
+                batch_id = random.randint(0, 10000)
+                Success.objects.create(scan=self.scan, batch_id=batch_id)
+                return True
 
-            return False
+            elif response.json() != {"errors": []}:
+                error_response = response.json()["errors"][0]
+                self.title = error_response["title"]
+                self.detail = error_response["detail"]
+                self.save()
+
+                return False
 
         else:
             self.title = "RESPONSE ERROR"
