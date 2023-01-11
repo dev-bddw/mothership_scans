@@ -490,7 +490,7 @@ def bin_api_view(request):
 
     return render(
         request,
-        "api_view.html",
+        "failed_list.html",
         {
             "scans": Scan.objects.all(),
             "fails": Fail.objects.all(),

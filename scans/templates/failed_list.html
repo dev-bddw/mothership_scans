@@ -5,39 +5,15 @@
 {% csrf_token %}
 
 <div class="pt-5 pb-5 text-center">
-		<h1>BDDWINV API CALLS STATUS</h1>
+		<h1>FAILED API CALLS TO BIN</h1>
+		<p>TLDR; A simple list of scans that were not updated in the bin. </p>
+		<a href="{% url 'export-fails' %}">CSV</a>
 </div>
 
 <div style="text-transform: uppercase" class="container">
 		<div style="font-size: 12px"  class="row">
 				<div class="col">
-						<h4>SUCCEEDED</h4>
-						<p></p>
-						<table style="background-color: #ebf5e9" id="search-results" class="pt-4 table table-striped">
-							<thead>
-							  <tr>
-								<th scope="col">id</th>
-								<th scope="col">tracking</th>
-								<th scope="col">time</th>
-							  </tr>
-							</thead>
-							<tbody>
-									{% for success in successes %}
-											<tr>
-											<td>{{success.scan.scan_id}}</td>
-											<td>{{success.scan.tracking}}</td>
-											<td>{{success.time}}</td>
-											<td></td>
-											<td></td>
-											</tr>
-									{% endfor %}
-							</tbody>						  </table>
-				</div>
-
-				<div class="col-8">
-						<h4>FAILED</h4>
-						<a href="{% url 'export-fails' %}">CSV</a>
-						<table style="background-color: #fcf0f2"  id="search-results" class="pt-4 table table-striped">
+						<table style=""  id="search-results" class="pt-4 table table-striped">
 							<thead>
 							  <tr>
 								<th scope="col">SCAN ID</th>
@@ -61,7 +37,7 @@
 											<td></td>
 											{%else%}
 											<td>
-											<button class="btn btn-dark btn-sm" hx-get="{% url 'resend' fail.pk %}" hx-target="this" hx-trigger="click">resend</button>
+											<button style="font-size: 12px;"  class="btn btn-dark btn-sm" hx-get="{% url 'resend' fail.pk %}" hx-target="this" hx-trigger="click">resend</button>
 											</td>
 											{%endif%}
 											</tr>
