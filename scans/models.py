@@ -68,7 +68,7 @@ class Fail(models.Model):
                     "id": self.scan.tracking,
                     "attributes": {
                         "sku": self.scan.sku,
-                        "location": self.scan.location,
+                        "location": self.scan.readable_location(),
                         "last_scan": str(self.scan.scan_id),
                     },
                 }
@@ -121,7 +121,10 @@ class Scan(models.Model):
         return f"SKU: {self.sku} LOC: {self.location} UID: {self.scan_id}"
 
     def readable_location(self):
-
+        """
+        RETURNS BIN READABLE LOCATION
+        TODO: rename to something that make sense
+        """
         locations = {
             "301": "FRANKFORD",
             "201": "RED LION",
