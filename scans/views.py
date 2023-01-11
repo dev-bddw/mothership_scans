@@ -111,6 +111,7 @@ def return_scans_by_location(request, location):
 @login_required
 def send_all_scans(request):
     """
+    in dev
     send or resend all latest scans by tn that are marked bin_succcess False
     """
 
@@ -137,8 +138,20 @@ def send_all_scans(request):
     return JsonResponse()
 
 
+def resend_scan_hx(request, pk):
+    """
+    resend failed scan to bin
+    """
+
+    result = Fail.objects.get(id=pk).resend()
+
+    in_template = "Success" if result else "Failed"
+
+    return HttpResponse(in_template)
+
+
 @csrf_exempt
-@api_view(["GET", "POST"])
+@api_view(["POST"])
 def create_scan_api_endpoint_v2(request):
 
     batch_id = random.randint(0, 10000)
@@ -262,127 +275,68 @@ def create_scan_api_endpoint_v2(request):
         print(process_result)
         return JsonResponse(for_processing["terminal_response"])
 
-    if request.method != "POST":
-        return JsonResponse("This is an api endpoint")
 
-
-@csrf_exempt
-@api_view(["GET", "POST"])
-def create_scan_api_endpoint(request):
+@login_required
+def export_fails(request):
     """
-    endpoint for terminal_scan data
-    data is processed here, saved to mothership,
-    then forwarded to BIN_API_ENDPOINT
-    where response is evaluated for success
-    and mothership_scan record is updated based on success
-    other notes: we are processing all at once at the time of scan upload, should be moved to a task q
+    exports fail data to csv after using fk relation
+    to grab pertinent scan data
     """
-    terminal_response_package, bin_package = ({"data": []}, {"data": []})
 
-    if request.method == "POST":
-        terminal_post = request.data["data"]
-        for scan in terminal_post:
+    date = datetime.datetime.now()
 
-            new_scan, updated = Scan.objects.update_or_create(
-                scan_id=scan["id"], defaults=scan["attributes"]
-            )
+    response = HttpResponse(
+        content_type="text/csv",
+        headers={
+            "Content-Disposition": f'attachment; filename="BDDW_FAILS_{date}.csv"'
+        },
+    )
 
-            terminal_response_package["data"].append(
-                {
-                    "type": "scans",
-                    "id": str(new_scan.scan_id),
-                    "attributes": {
-                        "time_upload": new_scan.time_upload.strftime(
-                            "%Y-%m-%dT%H:%M:%S.%f%z"
-                        ),
-                    },
-                }
-            )
+    writer = csv.writer(response)
 
-            bin_package["data"].append(
-                {
-                    "type": "items",
-                    "id": new_scan.tracking,
-                    "attributes": {
-                        "sku": new_scan.sku,
-                        "location": new_scan.readable_location(),
-                        "last_scan": str(new_scan.scan_id),
-                    },
-                }
-            )
+    fails = Fail.objects.all().values_list(
+        "scan",
+        "time",
+        "title",
+        "detail",
+        "batch_id",
+    )
 
-        def create_and_send(bin_package):
-            """
-            create and send to bin from list of dicts
-            """
-            headers = CaseInsensitiveDict()
-            headers["Accept"] = "application/json"
-            headers["Content-type"] = "application/json"
-            headers["Authorization"] = "Bearer {}".format(settings.BIN_KEY)
-            payload = json.dumps(bin_package)
+    combine_scan_data = [
+        [
+            Scan.objects.get(id=x[0]).scan_id,
+            Scan.objects.get(id=x[0]).tracking,
+            Scan.objects.get(id=x[0]).time_scan,
+            Scan.objects.get(id=x[0]).readable_location(),
+            Scan.objects.get(id=x[0]).sku,
+            Scan.objects.get(id=x[0]).bin_success,
+            x[1],
+            x[2],
+            x[3],
+            x[4],
+        ]
+        for x in fails
+    ]
 
-            return requests.patch(
-                settings.BIN_API_ENDPOINT, data=payload, headers=headers
-            )
+    writer.writerow(
+        [
+            "SCAN ID",
+            "TRACKING",
+            "TIME SCAN",
+            "LOCATION",
+            "SKU",
+            "BIN SUCCESS",
+            "TIME FAIL",
+            "FAIL TITLE",
+            "FAIL DETAIL",
+            "BATCH ID",
+        ]
+    )
 
-        def process_for_errors(bin_response):
-            """
-            eval bin response for errors
-            chage scan records based on errors
-            """
-            if bin_response.status_code == 200:
+    for row in combine_scan_data:
+        writer.writerow(row)
 
-                if bin_response.json() == {"errors": []}:
-
-                    process_result = "BIN UPDATED WITH NO ERRORS"
-                    for x in terminal_post:
-
-                        Scan.objects.filter(scan_id=str(x["id"])).update(
-                            bin_success=True
-                        )
-                        this_scan = Scan.objects.get(scan_id=str(x["id"]))
-                        Success.objects.create(scan=this_scan)
-                else:
-                    process_result = "BIN REACHED WITH ERRORS"
-                    r = bin_response.json()
-                    [
-                        Scan.objects.filter(scan_id=str(x["id"])).update(
-                            bin_success=True
-                        )
-                        for x in terminal_post
-                    ]
-                    [
-                        Scan.objects.filter(
-                            scan_id=str(y["source"]["attributes"]["last_scan"])
-                        ).update(bin_success=False)
-                        for y in r["errors"]
-                    ]
-                    for y in r["errors"]:
-                        this_scan = Scan.objects.get(
-                            scan_id=str(y["source"]["attributes"]["last_scan"])
-                        )
-                        Fail.objects.create(
-                            scan=this_scan, title=y["title"], detail=y["detail"]
-                        )
-
-            else:
-                process_result == "BIN UNREACHABLE"
-                for x in terminal_post:
-                    this_scan = Scan.objects.get(scan_id=str(x["id"]))
-                    Fail.objects.create(
-                        scan=this_scan,
-                        title="Response Error",
-                        detail=f"{bin_response.status_code}",
-                    )
-
-            return process_result
-
-        process_for_errors(create_and_send(bin_package, terminal_post))
-        return JsonResponse(terminal_response_package)
-
-    elif request.method == "GET":
-
-        return JsonResponse({"errors": ["This endpoint requires POST."]})
+    return response
 
 
 @login_required

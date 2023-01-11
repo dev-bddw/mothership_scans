@@ -1,5 +1,9 @@
+import json
+import random
 import uuid
 
+import requests
+from django.conf import settings
 from django.db import models
 
 
@@ -26,7 +30,7 @@ class Fail(models.Model):
     scan = models.ForeignKey(
         "scans.Scan", on_delete=models.DO_NOTHING, blank=True, null=True
     )
-    time = models.DateTimeField(auto_now_add=True)
+    time = models.DateTimeField(auto_now=True)
     title = models.CharField(max_length=100, default="Fail", blank=True, null=True)
     detail = models.CharField(max_length=500, null=True, blank=True)
     batch_id = models.CharField(max_length=10, default=None, blank=True, null=True)
@@ -37,6 +41,60 @@ class Fail(models.Model):
     def __str__(self):
 
         return f"{self.scan}"
+
+    def create_headers(self):
+        """
+        create request header for bin
+        """
+
+        headers = requests.structures.CaseInsensitiveDict()
+        headers["Accept"] = "application/json"
+        headers["Content-type"] = "application/json"
+        headers["Authorization"] = "Bearer {}".format(settings.BIN_KEY)
+        return headers
+
+    def resend(self):
+        """
+        resend scan data to bin for this fail.
+        update scan record if resend succeeds.
+        create success record for scan.
+        """
+        headers = self.create_headers()
+
+        data = {
+            "data": [
+                {
+                    "type": "items",
+                    "id": self.scan.tracking,
+                    "attributes": {
+                        "sku": self.scan.sku,
+                        "location": self.scan.location,
+                        "last_scan": str(self.scan.scan_id),
+                    },
+                }
+            ]
+        }
+
+        response = requests.patch(
+            settings.BIN_API_ENDPOINT,
+            data=json.dumps(data),
+            headers=headers,
+        )
+
+        if response.json() == {"data": []}:
+
+            scan = Scan.objects.get(scan_id=self.scan.id)
+            scan.update(bin_success=True)
+            batch_id = random.randint(0, 10000)
+            Success.objects.create(scan=scan, batch_id=batch_id)
+            return True
+
+        else:
+            error_response = response.json()["errors"][0]
+            self.title = error_response["title"]
+            self.detail = error_response["detail"]
+            self.save()
+            return False
 
 
 class Scan(models.Model):

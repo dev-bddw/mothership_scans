@@ -9,10 +9,11 @@ from rest_framework.authtoken.views import obtain_auth_token
 
 from scans.views import (
     bin_api_view,
-    create_scan_api_endpoint,
     create_scan_api_endpoint_v2,
+    export_fails,
     export_last_scans,
     export_scans,
+    resend_scan_hx,
     return_scans_by_location,
     return_scans_by_sku,
     return_scans_by_tn,
@@ -25,9 +26,11 @@ from scans.views import (
 urlpatterns = [
     path("", view=scans_list, name="home"),
     path("endpoint/", view=create_scan_api_endpoint_v2, name="endpoint"),
-    path("csv/", view=export_scans, name="export"),
+    path("resend/<pk>", view=resend_scan_hx, name="resend"),
+    path("csv/export-scans/", view=export_fails, name="export-fails"),
+    path("csv/export-fails/", view=export_scans, name="export-scans"),
     path("csv/uploads/", view=upload_csv, name="upload"),
-    path("csv/export-latest", view=export_last_scans, name="export-latest"),
+    path("csv/export-latest/", view=export_last_scans, name="export-latest"),
     path("sort/", view=scans_sorting, name="sorting"),
     path("search/", view=search_scans, name="search"),
     path("by-sku/<item_sku>/", view=return_scans_by_sku, name="by-sku"),
