@@ -84,10 +84,10 @@ class Fail(models.Model):
         if response.json() == {"errors": []}:
 
             self.scan.bin_success = True
-            self.scan.save()
             self.title = "RESOLVED"
             self.details = "Success after resend"
-            self.details = response.status_code
+            self.scan.save()
+            self.save()
             batch_id = random.randint(0, 10000)
             Success.objects.create(scan=self.scan, batch_id=batch_id)
             return True
