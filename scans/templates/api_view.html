@@ -57,7 +57,13 @@
 											<td>{{fail.time}}</td>
 											<td>{{fail.title}}</td>
 											<td>{{fail.detail}}</td>
-											<td><a hx-get="{% url 'resend' fail.pk %}" hx-target="this" hx-trigger="click">resend</a></td>
+											{% if fail.scan.bin_success == True %}
+											<td></td>
+											{%else%}
+											<td>
+											<button class="btn btn-dark btn-sm" hx-get="{% url 'resend' fail.pk %}" hx-target="this" hx-trigger="click">resend</button>
+											</td>
+											{%endif%}
 											</tr>
 									{% endfor %}
 							</tbody>

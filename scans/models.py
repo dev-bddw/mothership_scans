@@ -85,7 +85,7 @@ class Fail(models.Model):
 
             self.scan.bin_success = True
             self.title = "RESOLVED"
-            self.details = "Success after resend"
+            self.detail = "Success after resend"
             self.scan.save()
             self.save()
             batch_id = random.randint(0, 10000)
