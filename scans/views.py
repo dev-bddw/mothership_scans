@@ -54,6 +54,7 @@ def search_scans(request):
         return render(request, "partials/search.html", {"scans": scans})
 
 
+@login_required
 def return_scans_by_sku(request, item_sku):
 
     order_by = (
@@ -72,6 +73,7 @@ def return_scans_by_sku(request, item_sku):
     )
 
 
+@login_required
 def return_scans_by_tn(request, tn):
 
     order_by = (
@@ -90,6 +92,7 @@ def return_scans_by_tn(request, tn):
     )
 
 
+@login_required
 def return_scans_by_location(request, location):
 
     order_by = (
@@ -138,6 +141,7 @@ def send_all_scans(request):
     return JsonResponse()
 
 
+@login_required
 def resend_scan_hx(request, pk):
     """
     resend failed scan to bin
@@ -202,6 +206,7 @@ def create_scan_api_endpoint_v2(request):
                             "sku": scan.sku,
                             "location": scan.readable_location(),
                             "last_scan": str(scan.scan_id),
+                            "time_scan": scan.time_scan,
                         },
                     }
                 )
@@ -486,6 +491,7 @@ def export_last_scans(request):
     return response
 
 
+@login_required
 def bin_api_view(request):
 
     return render(

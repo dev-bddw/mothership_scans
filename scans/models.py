@@ -70,6 +70,7 @@ class Fail(models.Model):
                         "sku": self.scan.sku,
                         "location": self.scan.readable_location(),
                         "last_scan": str(self.scan.scan_id),
+                        "time_scan": self.time_scan,
                     },
                 }
             ]

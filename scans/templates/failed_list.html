@@ -14,20 +14,19 @@
 		<div style="font-size: 12px"  class="row">
 				<div class="col">
 						<table style=""  id="search-results" class="pt-4 table table-striped">
-							<thead>
-							  <tr>
-								<th scope="col">SCAN ID</th>
-								<th scope="col">tracking</th>
-								<th scope="col">time</th>
-								<th scope="col">error</th>
-								<th scope="col">details</th>
-								<th scope="col"></th>
-
-							  </tr>
-							</thead>
-							<tbody>
-									{% for fail in fails %}
-											<tr>
+								<thead>
+									<tr>
+										<th scope="col">SCAN ID</th>
+										<th scope="col">tracking</th>
+										<th scope="col">time failed</th>
+										<th scope="col">error title</th>
+										<th scope="col">error detail</th>
+										<th scope="col"></th>
+									</tr>
+								</thead>
+								<tbody>
+								{% for fail in fails %}
+									<tr>
 											<td>{{fail.scan.scan_id}}</td>
 											<td>{{fail.scan.tracking}}</td>
 											<td>{{fail.time}}</td>
@@ -41,9 +40,9 @@
 											</td>
 											{%endif%}
 											</tr>
-									{% endfor %}
-							</tbody>
-						  </table>
+								{% endfor %}
+								</tbody>
+						</table>
 				</div>
 </div>
 {% endblock content %}
