@@ -3,6 +3,7 @@ import datetime
 import io
 import json
 import random
+import time
 
 import requests
 from django.conf import settings
@@ -185,11 +186,7 @@ def create_scan_api_endpoint_v2(request):
                     {
                         "type": "scans",
                         "id": str(scan.scan_id),
-                        "attributes": {
-                            "time_upload": scan.time_upload.strftime(
-                                "%Y-%m-%dT%H:%M:%S.%f%z"
-                            ),
-                        },
+                        "attributes": {"time_upload": scan.time_upload.__str__()},
                     }
                 )
             except ValueError:
@@ -205,8 +202,10 @@ def create_scan_api_endpoint_v2(request):
                         "attributes": {
                             "sku": scan.sku,
                             "location": scan.readable_location(),
-                            "last_scan": str(scan.scan_id),
-                            "time_scan": scan.time_scan,
+                            "scan_id": scan.scan_id.__str__(),
+                            "time_scan": time.mktime(scan.time_scan.timetuple())
+                            .__int__()
+                            .__str__(),  # unixtimestamp conversion for bin
                         },
                     }
                 )

@@ -9,6 +9,7 @@ request_body = {
                 "sku": "220520000",
                 "location": "RED LION",
                 "last_scan": "3c9fc216-4fe0-44f9-9774-ebc88b7d8171",
+                "time_scan": "timestamp",
             },
         }
     ]

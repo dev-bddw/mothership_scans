@@ -1,5 +1,6 @@
 import json
 import random
+import time
 import uuid
 
 import requests
@@ -69,8 +70,10 @@ class Fail(models.Model):
                     "attributes": {
                         "sku": self.scan.sku,
                         "location": self.scan.readable_location(),
-                        "last_scan": str(self.scan.scan_id),
-                        "time_scan": self.time_scan,
+                        "scan_id": self.scan.scan_id.__str__(),
+                        "time_scan": time.mktime(self.scan.time_scan.timetuple())
+                        .__int__()
+                        .__str__(),  # unixtimestamp conversion for bin
                     },
                 }
             ]
