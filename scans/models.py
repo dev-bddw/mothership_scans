@@ -1,6 +1,5 @@
 import json
 import random
-import time
 import uuid
 
 import requests
@@ -61,6 +60,7 @@ class Fail(models.Model):
         create success record for scan.
         """
         headers = self.create_headers()
+        from .time_convert import return_unix
 
         data = {
             "data": [
@@ -71,9 +71,7 @@ class Fail(models.Model):
                         "sku": self.scan.sku,
                         "location": self.scan.readable_location(),
                         "scan_id": self.scan.scan_id.__str__(),
-                        "time_scan": time.mktime(self.scan.time_scan.timetuple())
-                        .__int__()
-                        .__str__(),  # unixtimestamp conversion for bin
+                        "time_scan": return_unix(self.scan.time_scan),
                     },
                 }
             ]
