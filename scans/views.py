@@ -17,6 +17,7 @@ from rest_framework.renderers import JSONRenderer
 
 from .models import Fail, Scan, Success
 from .serializers import ScanSerializer
+from .time_convert import return_unix
 
 
 @login_required
@@ -203,9 +204,7 @@ def create_scan_api_endpoint_v2(request):
                             "sku": scan.sku,
                             "location": scan.readable_location(),
                             "scan_id": scan.scan_id.__str__(),
-                            "time_scan": time.mktime(scan.time_scan.timetuple())
-                            .__int__()
-                            .__str__(),  # unixtimestamp conversion for bin
+                            "time_scan": return_unix(scan.time_scan),
                         },
                     }
                 )

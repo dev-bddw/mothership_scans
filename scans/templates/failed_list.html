@@ -4,10 +4,13 @@
 
 {% csrf_token %}
 
-<div class="pt-5 pb-5 text-center">
+<div class="pt-5 pb-1 text-center">
 		<h1>FAILED API CALLS TO BIN</h1>
 		<p>TLDR; A simple list of scans that were not updated in the bin. </p>
 		<a href="{% url 'export-fails' %}">CSV</a>
+</div>
+<div class="pt-1 pb-5 text-center">
+		<h3 style="text-decoration: underline;">ALL SCANS DISPLAY EST TIME</h3>
 </div>
 
 <div style="text-transform: uppercase" class="container">
