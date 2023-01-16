@@ -6,22 +6,19 @@
 
 <div class="pt-5 pb-5 text-center">
 		<h1>BDDW SCANS</h1>
+		<p>TLDR; A simple list of scans, where they come from, what happened to them. </p>
+		<a  style="text-decoration: underline;" href="{% url 'export-scans' %}">CSV EXPORT ALL</a> |||
+		<a style="text-decoration: underline;" href="{% url 'export-latest' %}">CSV LAST UNIQUE (BY TN)</a>
 </div>
-
 <div class="row">
   <div class="col-3">
-    <input class="mb-3" type="search"
+    <input class="pl-2 mb-3" type="search"
     name="search" placeholder="sku or scan uuid"
     hx-post="{% url 'search' %}"
     hx-trigger="keyup changed delay:500ms, search"
     hx-target="#search-results"
     hx-swap="outerHTML">
   </div>
-</div>
-<div>
-	<a class="" style="text-decoration: underline; font-size: 12px" href="{% url 'export-scans' %}">EXPORT ALL</a>
-	<a class="px-5" style="text-decoration: underline; font-size: 12px" href="{% url 'export-latest' %}">EXPORT LAST UNIQUE (BY TN)</a>
-</div>
 </div>
 <div class="container">
 	<table id="search-results" class="pt-4 table table-striped">
