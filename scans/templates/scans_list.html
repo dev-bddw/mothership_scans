@@ -13,18 +13,21 @@
 <div class="pt-1 pb-5 text-center">
 		<h3 style="text-decoration: underline;">ALL SCANS DISPLAY EST TIME</h3>
 </div>
+<div class="container">
+	<div>
+		<span style="font-size: 9px">enter sku, tracking, or scan id</span>
+	</div>
 <div class="row">
   <div class="col-3">
-    <input class="pl-2 mb-3" type="search"
-    name="search" placeholder="sku or scan uuid"
+    <input style="width: 200px" class="pl-2 mb-3" type="search"
+    name="search" placeholder="search"
     hx-post="{% url 'search' %}"
     hx-trigger="keyup changed delay:500ms, search"
     hx-target="#search-results"
     hx-swap="outerHTML">
   </div>
 </div>
-<div class="container">
-	<table id="search-results" class="pt-4 table table-striped">
+<table id="search-results" class="pt-4 table table-striped">
 		<thead>
 		  <tr>
 			<th scope="col">ITEM #</th>
@@ -42,7 +45,7 @@
 			  <a href="{% url 'sorting' %}?sorting=-time_upload"><span style="font-size: 14px;">&#x2191;</span></a>
 			  <a href="{% url 'sorting' %}?sorting=time_upload"><span style="font-size: 14px;">&#x2193;</span></a>
 			</th>
-			<th scope="col">SCAN UUID</th>
+			<th scope="col">SCAN ID</th>
 			<th scope="col">BIN UPDATED</th>
 		  </tr>
 		</thead>

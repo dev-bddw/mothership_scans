@@ -47,11 +47,65 @@ def search_scans(request):
     if request.method == "POST":
 
         query = request.POST.get("search")
-        scans = Scan.objects.filter(sku__startswith=query)
 
-        if len(scans) == 0:
+        lll = []
 
-            scans = Scan.objects.filter(scan_id__startswith=query)
+        [
+            lll.append(
+                [
+                    x.sku,
+                    x.tracking,
+                    x.location,
+                    x.time_scan,
+                    x.time_upload,
+                    x.scan_id,
+                    x.bin_success,
+                ]
+            )
+            for x in Scan.objects.filter(sku__startswith=query)
+        ]
+        [
+            lll.append(
+                [
+                    x.sku,
+                    x.tracking,
+                    x.location,
+                    x.time_scan,
+                    x.time_upload,
+                    x.scan_id,
+                    x.bin_success,
+                ]
+            )
+            for x in Scan.objects.filter(tracking__contains=query)
+        ]
+        [
+            lll.append(
+                [
+                    x.sku,
+                    x.tracking,
+                    x.location,
+                    x.time_scan,
+                    x.time_upload,
+                    x.scan_id,
+                    x.bin_success,
+                ]
+            )
+            for x in Scan.objects.filter(scan_id__startswith=query)
+        ]
+
+        lll.sort(reverse=True, key=lambda s: s[3])
+        scans = [
+            {
+                "sku": y[0],
+                "tracking": y[1],
+                "location": y[2],
+                "time_scan": y[3],
+                "time_upload": y[4],
+                "scan_id": y[5],
+                "bin_success": y[6],
+            }
+            for y in lll
+        ]
 
         return render(request, "partials/search.html", {"scans": scans})
 

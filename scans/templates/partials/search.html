@@ -6,7 +6,8 @@
         <th scope="col">LOCATION</th>
         <th scope="col">TIME SCANNED</th>
         <th scope="col">TIME UPLOADED</th>
-        <th scope="col">SCAN UUID</th>
+        <th scope="col">SCAN ID</th>
+	<th scope="col">BIN UPDATED</th>
       </tr>
     </thead>
     <tbody>
@@ -34,6 +35,9 @@
         <td>{{scan.time_scan}}</td>
         <td>{{scan.time_upload}}</td>
         <td>{{scan.scan_id}}</td>
+	<td>{% if scan.bin_success == True %}<span style="color: green">&#10004;</span>
+	{%else%}<span style="color: red">&#x2715;</span>{% endif %}
+	</td>
       </tr>
       {% endfor %}    </tbody>
   </table>
