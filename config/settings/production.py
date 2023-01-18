@@ -143,21 +143,17 @@ LOGGING = {
         "file": {"format": "%(asctime)s %(name)-12s %(levelname)-8s %(message)s"}
     },
     "handlers": {
-        "django.request.file": {
-            "level": "DEBUG",
+        "file": {
+            "level": "WARNING",
             "class": "logging.FileHandler",
-            "filename": "/app/mothership_scans/requests.log",
+            "filename": "/app/mother_scans.log",
             "formatter": "file",
         },
     },
     "loggers": {
         "django": {
-            "handlers": ["django.request.file"],
-            "level": "INFO",
-        },
-        "django.request": {
-            "handlers": ["django.request.file"],
-            "level": "DEBUG",
+            "handlers": ["file"],
+            "level": "WARNING",
         },
     },
 }
