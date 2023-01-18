@@ -146,36 +146,16 @@ LOGGING = {
         }
     },
     "handlers": {
-        "mail_admins": {
-            "level": "ERROR",
-            "filters": ["require_debug_false"],
-            "class": "django.utils.log.AdminEmailHandler",
-        },
-        "console": {
-            "level": "DEBUG",
-            "class": "logging.StreamHandler",
-            "formatter": "verbose",
-        },
         "file": {
             "level": "DEBUG",
             "class": "logging.FileHandler",
             "filename": "/app/mothership_scans/debug.log",
         },
-        "root": {"level": "INFO", "handlers": ["console", "file"]},
+        "root": {"level": "DEBUG", "handlers": ["file"]},
         "loggers": {
             "django": {
                 "handlers": ["file"],
                 "level": "DEBUG",
-                "propagate": True,
-            },
-            "django.request": {
-                "handlers": ["mail_admins"],
-                "level": "ERROR",
-                "propagate": True,
-            },
-            "django.security.DisallowedHost": {
-                "level": "ERROR",
-                "handlers": ["console", "mail_admins"],
                 "propagate": True,
             },
         },
