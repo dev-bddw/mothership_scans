@@ -151,12 +151,12 @@ LOGGING = {
             "class": "logging.FileHandler",
             "filename": "/app/mothership_scans/debug.log",
         },
-        "loggers": {
-            "django": {
-                "handlers": ["file"],
-                "level": "DEBUG",
-                "propagate": True,
-            },
+    },
+    "loggers": {
+        "django": {
+            "handlers": ["file"],
+            "level": "DEBUG",
+            "propagate": True,
         },
     },
 }
