@@ -150,6 +150,7 @@ LOGGING = {
             "level": "INFO",
             "class": "logging.FileHandler",
             "filename": "/app/mothership_scans/debug.log",
+            "formatter": "verbose",
         },
     },
     "loggers": {
