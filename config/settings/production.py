@@ -144,7 +144,7 @@ LOGGING = {
     },
     "handlers": {
         "django.request.file": {
-            "level": "INFO",
+            "level": "DEBUG",
             "class": "logging.FileHandler",
             "filename": "/app/mothership_scans/requests.log",
             "formatter": "file",
@@ -153,7 +153,7 @@ LOGGING = {
     "loggers": {
         "django.request": {
             "handlers": ["django.request.file"],
-            "level": "INFO",
+            "level": "DEBUG",
         },
     },
 }
