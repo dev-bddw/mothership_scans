@@ -140,24 +140,24 @@ LOGGING = {
     "disable_existing_loggers": False,
     "filters": {"require_debug_false": {"()": "django.utils.log.RequireDebugFalse"}},
     "formatters": {
-        "verbose": {
-            "format": "%(levelname)s %(asctime)s %(module)s "
-            "%(process)d %(thread)d %(message)s"
+        "django.server": {
+            "()": "django.utils.log.ServerFormatter",
+            "format": "[{server_time}] {message}",
+            "style": "{",
         }
     },
     "handlers": {
-        "file": {
+        "django.server.file": {
             "level": "INFO",
             "class": "logging.FileHandler",
-            "filename": "/app/mothership_scans/debug.log",
-            "formatter": "verbose",
+            "filename": "/app/mothership_scans/server.log",
+            "formatter": "django.server",
         },
     },
     "loggers": {
         "django": {
-            "handlers": ["file"],
+            "handlers": ["django.server.file"],
             "level": "INFO",
-            "propagate": True,
         },
     },
 }
