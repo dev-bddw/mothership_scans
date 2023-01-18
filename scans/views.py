@@ -44,11 +44,33 @@ def scans_sorting(request):
 
 @login_required
 def search_scans(request):
+    """
+    HX view for basic search
+    TO DO: search has issues with case sensitivity
+    uuids are lower case
+    skus sometimes have characters that are case sensitive
+    """
     if request.method == "POST":
 
         query = request.POST.get("search")
 
         lll = []
+
+        def x_not_in_lll(x, lll=lll):
+
+            if [
+                x.sku,
+                x.tracking,
+                x.location,
+                x.time_scan,
+                x.time_upload,
+                x.scan_id,
+                x.bin_success,
+            ] not in lll:
+                return True
+
+            else:
+                return False
 
         [
             lll.append(
@@ -63,6 +85,7 @@ def search_scans(request):
                 ]
             )
             for x in Scan.objects.filter(sku__startswith=query)
+            if x_not_in_lll(x)
         ]
         [
             lll.append(
@@ -77,6 +100,7 @@ def search_scans(request):
                 ]
             )
             for x in Scan.objects.filter(tracking__contains=query)
+            if x_not_in_lll(x)
         ]
         [
             lll.append(
@@ -91,6 +115,7 @@ def search_scans(request):
                 ]
             )
             for x in Scan.objects.filter(scan_id__startswith=query)
+            if x_not_in_lll(x)
         ]
 
         lll.sort(reverse=True, key=lambda s: s[3])
@@ -170,7 +195,7 @@ def return_scans_by_location(request, location):
 @login_required
 def send_all_scans(request):
     """
-    in dev
+    in dev not currently implemented
     send or resend all latest scans by tn that are marked bin_succcess False
     """
 
