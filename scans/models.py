@@ -10,7 +10,7 @@ from django.db import models
 class Success(models.Model):
 
     scan = models.ForeignKey(
-        "scans.Scan", on_delete=models.DO_NOTHING, blank=True, null=True
+        "scans.Scan", on_delete=models.CASCADE, blank=True, null=True
     )
     time = models.DateTimeField(auto_now_add=True)
     title = models.CharField(max_length=100, default="Success", blank=True, null=True)
@@ -28,7 +28,7 @@ class Success(models.Model):
 class Fail(models.Model):
 
     scan = models.ForeignKey(
-        "scans.Scan", on_delete=models.DO_NOTHING, blank=True, null=True
+        "scans.Scan", on_delete=models.CASCADE, blank=True, null=True
     )
     time = models.DateTimeField(auto_now=True)
     title = models.CharField(max_length=100, default="Fail", blank=True, null=True)
