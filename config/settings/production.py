@@ -155,7 +155,7 @@ LOGGING = {
         },
     },
     "loggers": {
-        "django": {
+        "django.server": {
             "handlers": ["django.server.file"],
             "level": "INFO",
         },
