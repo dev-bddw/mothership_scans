@@ -151,6 +151,10 @@ LOGGING = {
         },
     },
     "loggers": {
+        "django": {
+            "handlers": ["django.request.file"],
+            "level": "DEBUG",
+        },
         "django.request": {
             "handlers": ["django.request.file"],
             "level": "DEBUG",
