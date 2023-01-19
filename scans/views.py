@@ -84,7 +84,7 @@ def search_scans(request):
                     x.bin_success,
                 ]
             )
-            for x in Scan.objects.filter(sku__startswith=query)
+            for x in Scan.objects.filter(sku__startswith=query.upper())
             if x_not_in_lll(x)
         ]
         [
@@ -99,7 +99,7 @@ def search_scans(request):
                     x.bin_success,
                 ]
             )
-            for x in Scan.objects.filter(tracking__contains=query)
+            for x in Scan.objects.filter(tracking__contains=query.upper())
             if x_not_in_lll(x)
         ]
         [
@@ -114,7 +114,7 @@ def search_scans(request):
                     x.bin_success,
                 ]
             )
-            for x in Scan.objects.filter(scan_id__startswith=query)
+            for x in Scan.objects.filter(scan_id__startswith=query.lower())
             if x_not_in_lll(x)
         ]
 
