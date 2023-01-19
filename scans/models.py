@@ -131,8 +131,11 @@ class Scan(models.Model):
     class Meta:
         ordering = ["-time_scan"]
 
+        # TODO: ADD CONSTRAINT FOR SCAN TIME  < UPLOAD TIME
+        # https://docs.djangoproject.com/en/3.2/ref/models/options/#django.db.models.Options.constraints
+
     def __str__(self):
-        return f"SKU: {self.sku} LOC: {self.location} UID: {self.scan_id}"
+        return f"<{self.batch_id}::{self.time_scan}::{self.tracking}::{self.scan_id}>"
 
     def readable_location(self):
         """
