@@ -15,7 +15,7 @@ from requests.structures import CaseInsensitiveDict
 from rest_framework.decorators import api_view
 from rest_framework.renderers import JSONRenderer
 
-from .models import Fail, Scan, Success
+from .models import Fail, PageNote, Scan, Success
 from .serializers import ScanSerializer
 from .time_convert import return_unix
 
@@ -23,10 +23,17 @@ from .time_convert import return_unix
 @login_required
 def scans_list(request):
 
+    try:
+        note = PageNote.objects.get(page="front page").note
+    except PageNote.DoesNotExist:
+        note = "Please create a PageNote w/ page = 'front page' "
     return render(
         request,
         "scans_list.html",
-        {"scans": Scan.objects.all()},
+        {
+            "scans": Scan.objects.all(),
+            "note": note,
+        },
     )
 
 
@@ -580,3 +587,15 @@ def bin_api_view(request):
             "successes": Success.objects.all(),
         },
     )
+
+
+def note_hx(request):
+    if request.POST["note"]:
+        try:
+            txt = PageNote.objects.filter(page="front page").update(
+                note=request.POST["note"]
+            )
+        except PageNote.DoesNotExist:
+            txt = "error"
+
+    return HttpResponse(txt)

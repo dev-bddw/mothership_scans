@@ -7,8 +7,17 @@
 <div class="pt-5 pb-1 text-center">
 		<h1>BDDW SCANS</h1>
 		<p>TLDR; A simple list of scans, where they come from, what happened to them. </p>
+		<p>
 		<a  style="text-decoration: underline;" href="{% url 'export-scans' %}">CSV EXPORT ALL</a> |||
 		<a style="text-decoration: underline;" href="{% url 'export-latest' %}">CSV LAST UNIQUE (BY TN)</a>
+		</p>
+		<textarea
+		style="width:330px"
+		name='note'
+		hx-post="{% url 'note_hx' %}"
+		hx-trigger="keyup changed delay:500ms, note"
+		>{{note}}</textarea>
+
 </div>
 <div class="pt-1 pb-5 text-center">
 		<h3 style="text-decoration: underline;">ALL SCANS DISPLAY EST TIME</h3>

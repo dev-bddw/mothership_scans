@@ -13,6 +13,7 @@ from scans.views import (
     export_fails,
     export_last_scans,
     export_scans,
+    note_hx,
     resend_scan_hx,
     return_scans_by_location,
     return_scans_by_sku,
@@ -33,6 +34,7 @@ urlpatterns = [
     path("csv/export-latest/", view=export_last_scans, name="export-latest"),
     path("sort/", view=scans_sorting, name="sorting"),
     path("search/", view=search_scans, name="search"),
+    path("note/", view=note_hx, name="note_hx"),
     path("by-sku/<item_sku>/", view=return_scans_by_sku, name="by-sku"),
     path(
         "by-location/<int:location>/", view=return_scans_by_location, name="by-location"

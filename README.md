@@ -8,7 +8,7 @@ Scanner Terminal ...> Scanner Mothership ...> BDDW BIN SITE
 
 -  recieves scanner data from bddw scanner terminals
 -  sends scanner data to the bddw inventory app
--  scan data that can be easily searched
+-  Web API for easy search and lookup of scans
 -  records failed attempts to update bin & allows users to resend data
 
 # more information

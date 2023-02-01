@@ -159,3 +159,9 @@ class Scan(models.Model):
 
     def is_latest(self):
         return Scan.objects.filter(tracking=self.tracking).first() == self
+
+
+class PageNote(models.Model):
+
+    note = models.TextField(max_length=10000, null=True, blank=True)
+    page = models.CharField(max_length=100, null=True, blank=True)
