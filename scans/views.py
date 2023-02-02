@@ -590,6 +590,7 @@ def bin_api_view(request):
 
 
 def note_hx(request):
+
     if request.POST["note"]:
         try:
             txt = PageNote.objects.filter(page="front page").update(
@@ -598,4 +599,8 @@ def note_hx(request):
         except PageNote.DoesNotExist:
             txt = "error"
 
-    return HttpResponse(txt)
+        return HttpResponse(txt)
+
+    else:
+
+        return HttpResponse("must be post request")
