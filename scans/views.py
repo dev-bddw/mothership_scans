@@ -53,7 +53,6 @@ def scans_sorting(request):
 def search_scans(request):
     """
     HX view for basic search
-    TO DO: search has issues with case sensitivity
     uuids are lower case
     skus sometimes have characters that are case sensitive
     """
@@ -197,36 +196,6 @@ def return_scans_by_location(request, location):
             "location": location,
         },
     )
-
-
-@login_required
-def send_all_scans(request):
-    """
-    in dev not currently implemented
-    send or resend all latest scans by tn that are marked bin_succcess False
-    """
-
-    bin_package = []
-
-    for scan in Scan.objects.all().exclude(bin_succes=True):
-
-        if scan.is_latest() and scan.has_tracking():
-
-            bin_package["data"].append(
-                {
-                    "type": "items",
-                    "id": scan.tracking,
-                    "attributes": {
-                        "sku": scan.sku,
-                        "location": scan.readable_location(),
-                        "last_scan": str(scan.scan_id),
-                    },
-                }
-            )
-
-    # result = process_for_errors(create_and_send(bin_package))
-
-    return JsonResponse()
 
 
 @login_required
@@ -576,7 +545,7 @@ def export_last_scans(request):
 
 
 @login_required
-def bin_api_view(request):
+def failed_list(request):
 
     return render(
         request,
@@ -589,6 +558,7 @@ def bin_api_view(request):
     )
 
 
+@login_required
 def note_hx(request):
 
     if request.POST["note"]:

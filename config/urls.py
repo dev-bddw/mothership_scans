@@ -8,11 +8,11 @@ from drf_spectacular.views import SpectacularAPIView, SpectacularSwaggerView
 from rest_framework.authtoken.views import obtain_auth_token
 
 from scans.views import (
-    bin_api_view,
     create_scan_api_endpoint_v2,
     export_fails,
     export_last_scans,
     export_scans,
+    failed_list,
     note_hx,
     resend_scan_hx,
     return_scans_by_location,
@@ -43,7 +43,7 @@ urlpatterns = [
     path(
         "about/", TemplateView.as_view(template_name="pages/about.html"), name="about"
     ),
-    path("api-view/", view=bin_api_view, name="api_view"),
+    path("failed-scans/", view=failed_list, name="failed-list"),
     # Django Admin, use {% url 'admin:index' %}
     path(settings.ADMIN_URL, admin.site.urls),
     # User management
