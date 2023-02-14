@@ -140,6 +140,10 @@ def search_scans(request):
 
         return render(request, "partials/search.html", {"scans": scans})
 
+    else:
+
+        return HttpResponse("this endpoint accepts post only")
+
 
 @login_required
 def return_scans_by_sku(request, item_sku):
