@@ -1,7 +1,7 @@
 # mothership scans
 
 This is an internal (private) cloud application that recieves and processes api information from BDDW scanner terminals.
-
+....
 Scanner Terminal ...> Scanner Mothership ...> BDDW BIN SITE
 
 # features
