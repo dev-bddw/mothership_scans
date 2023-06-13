@@ -13,10 +13,9 @@ from django.shortcuts import render
 from django.views.decorators.csrf import csrf_exempt
 from requests.structures import CaseInsensitiveDict
 from rest_framework.decorators import api_view
-from rest_framework.renderers import JSONRenderer
 
+from .helpers import process_scans
 from .models import Fail, PageNote, Scan, Success
-from .serializers import ScanSerializer
 from .time_convert import return_unix
 
 
@@ -55,6 +54,7 @@ def search_scans(request):
     HX view for basic search
     uuids are lower case
     skus sometimes have characters that are case sensitive
+    TODO: use icontains or istarswith for insensitive
     """
     if request.method == "POST":
 
@@ -213,6 +213,23 @@ def resend_scan_hx(request, pk):
     in_template = "Success" if result else "Failed"
 
     return HttpResponse(in_template)
+
+
+@api_view(["POST"])
+def create_scan_api_endpoint_v3(request):
+    """
+    rewrite endpoint to be more sane
+
+    this api endpoint access takes list of scans from terminals
+    creates scan records here
+    updates the bin location by tracking number
+    returns response back to terminal
+    """
+    if request.method == "POST":
+        response = process_scans(request)
+        return JsonResponse(response)
+    else:
+        return JsonResponse({"error": "Request method unsupported"})
 
 
 @csrf_exempt
@@ -403,6 +420,10 @@ def export_fails(request):
 
 @login_required
 def export_scans(request):
+    """
+    deprecated
+    """
+
     date = datetime.datetime.now()
 
     response = HttpResponse(
@@ -436,12 +457,27 @@ def export_scans(request):
         ]
     )
 
+    def handle_return_readable(scan_id):
+        """
+        handle case where multiple scans show up with same scan_id
+        not sure why this is happening
+        """
+        try:
+            Scan.objects.get(scan_id=scan_id).readable_location(),
+        except Scan.MultipleObjectsReturned:
+            print("this scan raised a multiple objects returned exception")
+            for scan in Scan.objects.filter(scan_id=scan_id):
+                if scan.is_latest():
+                    return scan.readable_location()
+                else:
+                    return "THis is a duplicate"
+
     [
         writer.writerow(
             [
                 x[0],
                 x[1],
-                Scan.objects.get(scan_id=x[5]).readable_location(),
+                handle_return_readable(x[5]),
                 x[3],
                 x[4],
                 x[5],

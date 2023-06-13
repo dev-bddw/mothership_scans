@@ -131,16 +131,12 @@ class Scan(models.Model):
     class Meta:
         ordering = ["-time_scan"]
 
-        # TODO: ADD CONSTRAINT FOR SCAN TIME  < UPLOAD TIME
-        # https://docs.djangoproject.com/en/3.2/ref/models/options/#django.db.models.Options.constraints
-
     def __str__(self):
         return f"<{self.batch_id}::{self.time_scan}::{self.tracking}::{self.scan_id}>"
 
     def readable_location(self):
         """
         RETURNS BIN READABLE LOCATION
-        TODO: rename to something that make sense
         """
         locations = {
             "301": "FRANKFORD",
@@ -153,6 +149,21 @@ class Scan(models.Model):
         }
 
         return locations[str(self.location)]
+
+    def to_dict(self):
+        """
+        return diction list for this model to be used
+        """
+        return {
+            "sku": self.sku,
+            "tracking": self.tracking,
+            "time_scan": self.time_scan,
+            "scan_id": self.scan_id,
+            "location": self.location,
+            "time_upload": self.time_upload,
+            "bin_success": self.bin_success,
+            "batch_id": self.batch_id,
+        }
 
     def has_tracking(self):
         return self.tracking not in [None, "", " "]
