@@ -7,8 +7,8 @@
 
 {% block javascript %}
   {{block.super}}
- <script type="module" crossorigin src="{% static "index-6ba7e9a4.js" %}"></script>
- <link rel="stylesheet" href="/assets/index-936fb591.css">
+ <script type="module" crossorigin src="{% static "index-9e78cab3.js" %}"></script>
+ <link rel="stylesheet" href="/assets/index-26e5e601.css">
 
 {% endblock javascript %}
 

@@ -2,9 +2,17 @@ import json
 import random
 import uuid
 
+import pytz
 import requests
 from django.conf import settings
 from django.db import models
+
+
+def convert_eastern(utc_time):
+    """convert utc time to est"""
+    EST = pytz.timezone("US/Eastern")
+    est_time = utc_time.astimezone(EST)
+    return est_time.strftime("%b %d %Y, %I:%M %p")
 
 
 class Success(models.Model):
@@ -157,10 +165,10 @@ class Scan(models.Model):
         return {
             "sku": self.sku,
             "tracking": self.tracking,
-            "time_scan": self.time_scan.__str__(),
+            "time_scan": convert_eastern(self.time_scan),
             "scan_id": self.scan_id.__str__(),
             "location": self.readable_location(),
-            "time_upload": self.time_upload.__str__(),
+            "time_upload": convert_eastern(self.time_upload),
             "bin_success": self.bin_success,
             "batch_id": self.batch_id,
         }
