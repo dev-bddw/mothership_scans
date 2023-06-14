@@ -1,45 +1,25 @@
+# noqa
 from django.conf import settings
 from django.conf.urls.static import static
 from django.contrib import admin
 from django.urls import include, path
 from django.views import defaults as default_views
-from rest_framework.authtoken.views import obtain_auth_token
 
-from scans.views import (  # create_scan_api_endpoint_v2,
-    create_scan_api_endpoint_v3,
-    export_fails,
-    export_last_scans,
-    export_scans,
-    failed_list,
-    note_hx,
-    resend_scan_hx,
-    return_scans_by_location,
-    return_scans_by_sku,
-    return_scans_by_tn,
-    scans_list,
-    scans_sorting,
-    search_scans,
-    upload_csv,
-)
+from frontend.views import search_entry
+from scans.views import failed_list
+from scans.views_api import create_scan_api_endpoint_v3
+from scans.views_csv import export_fails, export_last_scans, upload_csv
+from scans.views_hx import resend_scan_hx
 
-# API URLS
+# THE ONE API ENDPOINT FOR THIS APP
 urlpatterns = [
     path("endpoint/", view=create_scan_api_endpoint_v3, name="endpoint"),
 ]
 
-# OTHER URLS
+# OTHER COMMON VIEWS
 urlpatterns += [
-    path("", view=scans_list, name="home"),
-    path("resend/<pk>", view=resend_scan_hx, name="resend"),
-    path("sort/", view=scans_sorting, name="sorting"),
-    path("search/", view=search_scans, name="search"),
-    path("note/", view=note_hx, name="note_hx"),
-    path("by-sku/<item_sku>/", view=return_scans_by_sku, name="by-sku"),
-    path(
-        "by-location/<int:location>/", view=return_scans_by_location, name="by-location"
-    ),
-    path("by-tn/<tn>/", view=return_scans_by_tn, name="by-tn"),
-    path("failed-scans/", view=failed_list, name="failed-list"),
+    path("", view=search_entry, name="home"),
+    path("frontend/", include("frontend.urls", namespace="frontend")),
     # Django Admin, use {% url 'admin:index' %}
     path(settings.ADMIN_URL, admin.site.urls),
     # User management
@@ -47,9 +27,15 @@ urlpatterns += [
     # Your stuff: custom urls includes go here
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
+# OLD - DEPERECATED????
+urlpatterns += [
+    path("resend/<pk>", view=resend_scan_hx, name="resend"),
+    path("failed-scans/", view=failed_list, name="failed-list"),
+]
+
+
 # CSV URLS
 urlpatterns += [
-    path("csv/export-scans/", view=export_scans, name="export-scans"),  # deprecated
     path("csv/export-fails/", view=export_fails, name="export-fails"),
     path("csv/uploads/", view=upload_csv, name="upload"),
     path("csv/export-latest/", view=export_last_scans, name="export-latest"),

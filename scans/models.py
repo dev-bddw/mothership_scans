@@ -157,10 +157,10 @@ class Scan(models.Model):
         return {
             "sku": self.sku,
             "tracking": self.tracking,
-            "time_scan": self.time_scan,
-            "scan_id": self.scan_id,
-            "location": self.location,
-            "time_upload": self.time_upload,
+            "time_scan": self.time_scan.__str__(),
+            "scan_id": self.scan_id.__str__(),
+            "location": self.readable_location(),
+            "time_upload": self.time_upload.__str__(),
             "bin_success": self.bin_success,
             "batch_id": self.batch_id,
         }
