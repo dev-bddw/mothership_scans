@@ -97,7 +97,7 @@ function App() {
               </tr>
               :
                scans.map( (scan) => {
-                     return( <ScanRow index={index} setSearch={setSearch} scan={scan}/>)
+                     return( <ScanRow setSearch={setSearch} scan={scan}/>)
                  }
                )
               }
