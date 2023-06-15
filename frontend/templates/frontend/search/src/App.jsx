@@ -90,9 +90,9 @@ function App() {
                 <td style={{width: '170px'}} className={'py-2 px-3'}>Returned None</td>
                 <td style={{width: '170px'}} className={'py-2 px-3'}></td>
                 <td style={{width: '170px'}} className={'py-2 px-3'}></td>
-                <td style={{width: '170px'}} className={'py-2 px-3'}></td>
-                <td style={{width: '170px'}} className={'py-2 px-3'}></td>
-                <td style={{width: '170px'}} className={'py-2 px-3'}></td>
+                <td style={{width: '200px'}} className={'py-2 px-3'}></td>
+                <td style={{width: '200px'}} className={'py-2 px-3'}></td>
+                <td style={{width: '370px'}} className={'py-2 px-3'}></td>
                 <td style={{width: '165px'}} className={'py-2 px-3'}></td>
               </tr>
               :
@@ -119,21 +119,21 @@ function ScanRow({scan, setSearch}) {
 
   return(
     <tr key={scan.id} className="hover:bg-gray-50 border-b">
-      <td onClick={() => onClickHandler(scan.sku)} className={'py-2 px-3'}>
+      <td style={{width: '170px'}} onClick={() => onClickHandler(scan.sku)} className={'py-2 px-3'}>
         <div className={'cursor-pointer hover:underline'}>{scan.sku}</div>
       </td>
-      <td onClick={() => onClickHandler(scan.tracking)} className={'py-2 px-3'}>
+      <td style={{width: '170px'}} onClick={() => onClickHandler(scan.tracking)} className={'py-2 px-3'}>
         <div className={'cursor-pointer hover:underline'}>{scan.tracking}</div>
       </td>
-      <td onClick={() => onClickHandler(scan.location)} className={'py-2 px-3'}>
+      <td style={{width: '170px'}} onClick={() => onClickHandler(scan.location)} className={'py-2 px-3'}>
         <div className={'cursor-pointer hover:underline'}>{scan.location}</div>
       </td>
-      <td className={'py-2 px-3'}>{scan.time_scan}</td>
-      <td className={'py-2 px-3'}>{scan.time_upload}</td>
-      <td onClick={() => onClickHandler(scan.scan_id)} className={'py-2 px-3'}>
+      <td style={{width: '200px'}} className={'py-2 px-3'}>{scan.time_scan}</td>
+      <td style={{width: '200px'}} className={'py-2 px-3'}>{scan.time_upload}</td>
+      <td style={{width: '370px'}} onClick={() => onClickHandler(scan.scan_id)} className={'py-2 px-3'}>
         <div className={'cursor-pointer hover:underline'}>{scan.scan_id}</div>
       </td>
-      <td className={'py-2 px-3'}>{ scan.bin_success ? 'SUCCESS' : <span className="text-red-400">FAILED</span>}</td>
+      <td style={{width: '165px'}} className={'py-2 px-3'}>{ scan.bin_success ? 'SUCCESS' : <span className="text-red-400">FAILED</span>}</td>
   </tr>
 
   )
