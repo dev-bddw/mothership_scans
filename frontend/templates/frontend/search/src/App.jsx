@@ -15,7 +15,6 @@ function App() {
 	const isMounted = useRef(false)
   const is_empty = scans.length == 0
 
-
   // if search change, wait a moment, send data to django
   useEffect(() => {
     const delayDebounceFn = setTimeout(() => {
@@ -88,14 +87,14 @@ function App() {
               <tbody>
             { is_empty ?
               <tr className="w-full border-b bg-white">
-              <td style={{width: '170px'}} className={'py-2 px-3'}>Returned None</td>
-              <td style={{width: '170px'}} className={'py-2 px-3'}></td>
-              <td style={{width: '170px'}} className={'py-2 px-3'}></td>
-              <td style={{width: '170px'}} className={'py-2 px-3'}></td>
-              <td style={{width: '170px'}} className={'py-2 px-3'}></td>
-              <td style={{width: '170px'}} className={'py-2 px-3'}></td>
-              <td style={{width: '165px'}} className={'py-2 px-3'}></td>
-            </tr>
+                <td style={{width: '170px'}} className={'py-2 px-3'}>Returned None</td>
+                <td style={{width: '170px'}} className={'py-2 px-3'}></td>
+                <td style={{width: '170px'}} className={'py-2 px-3'}></td>
+                <td style={{width: '170px'}} className={'py-2 px-3'}></td>
+                <td style={{width: '170px'}} className={'py-2 px-3'}></td>
+                <td style={{width: '170px'}} className={'py-2 px-3'}></td>
+                <td style={{width: '165px'}} className={'py-2 px-3'}></td>
+              </tr>
               :
                scans.map( (scan) => {
                      return( <ScanRow setSearch={setSearch} scan={scan}/>)
