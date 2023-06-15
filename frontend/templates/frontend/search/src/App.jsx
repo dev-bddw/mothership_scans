@@ -97,7 +97,7 @@ function App() {
               </tr>
               :
                scans.map( (scan) => {
-                     return( <ScanRow setSearch={setSearch} scan={scan}/>)
+                     return( <ScanRow index={index} setSearch={setSearch} scan={scan}/>)
                  }
                )
               }
@@ -118,7 +118,7 @@ function ScanRow({scan, setSearch}) {
   }
 
   return(
-    <tr className="hover:bg-gray-50 border-b">
+    <tr key={scan.id} className="hover:bg-gray-50 border-b">
       <td onClick={() => onClickHandler(scan.sku)} className={'py-2 px-3'}>
         <div className={'cursor-pointer hover:underline'}>{scan.sku}</div>
       </td>

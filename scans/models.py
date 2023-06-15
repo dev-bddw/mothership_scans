@@ -163,6 +163,7 @@ class Scan(models.Model):
         return diction list for this model to be used
         """
         return {
+            "id": self.id,
             "sku": self.sku,
             "tracking": self.tracking,
             "time_scan": convert_eastern(self.time_scan),
