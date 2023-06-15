@@ -72,7 +72,7 @@ function App() {
       </form>
       <div className="text-start py-3 text-gray-500 text-sm">Displaying {scans.length} results...</div>
       <div className="relative overflow-x-auto shadow-md sm:rounded-lg">
-          <table className="border rounded w-1200 text-sm text-left text-gray-500">
+          <table className="border rounded text-sm text-left text-gray-500">
               <thead className="text-xs text-gray-400 uppercase bg-gray-50">
               <tr>
                 <th className="py-2 px-3">sku</th>
@@ -86,7 +86,7 @@ function App() {
              </thead>
               <tbody>
             { is_empty ?
-              <tr className="w-full border-b bg-white">
+              <tr className="border-b bg-white">
                 <td style={{width: '170px'}} className={'py-2 px-3'}>Returned None</td>
                 <td style={{width: '170px'}} className={'py-2 px-3'}></td>
                 <td style={{width: '170px'}} className={'py-2 px-3'}></td>
