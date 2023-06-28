@@ -106,14 +106,14 @@ def process_scans(request):
 
                 [
                     Scan.objects.filter(
-                        scan_id=str(y["source"]["attributes"]["last_scan"])
+                        scan_id=str(y["source"]["attributes"]["scan_id"])
                     ).update(bin_success=False)
                     for y in r["errors"]
                 ]
 
                 for y in r["errors"]:
                     this_scan = Scan.objects.get(
-                        scan_id=str(y["source"]["attributes"]["last_scan"])
+                        scan_id=str(y["source"]["attributes"]["scan_id"])
                     )
                     Fail.objects.create(
                         scan=this_scan,
