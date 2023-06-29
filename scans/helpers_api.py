@@ -93,10 +93,13 @@ def process_scans(request):
 
             if response.json() == {"errors": []}:
 
+                # bin says everything updated correctly
                 process_result = "BIN UPDATED WITH NO ERRORS"
 
+                # mark everything a success
                 Scan.objects.filter(batch_id=batch_id).update(bin_success=True)
 
+                # create success objects quick
                 [
                     Success.objects.create(scan=x, batch_id=batch_id)
                     for x in Scan.objects.filter(batch_id=batch_id)
@@ -108,8 +111,10 @@ def process_scans(request):
 
                 r = response.json()
 
+                # mark all the  scan success (first)
                 Scan.objects.filter(batch_id=batch_id).update(bin_success=True)
 
+                # then go back through and marked the ones failed that failed
                 [
                     Scan.objects.filter(
                         scan_id=str(y["source"]["attributes"]["scan_id"])
@@ -117,10 +122,15 @@ def process_scans(request):
                     for y in r["errors"]
                 ]
 
+                # and now create Fail records for the failed scans
                 for y in r["errors"]:
-                    this_scan = Scan.objects.get(
+                    # for each error in the error response lookup the failed scan by ID
+                    # that comes back from the bin
+                    this_scan = Scan.objects.filter(
                         scan_id=str(y["source"]["attributes"]["scan_id"])
-                    )
+                    ).first()
+
+                    # create a failed scan record, fk to the scan itself
                     Fail.objects.create(
                         scan=this_scan,
                         batch_id=batch_id,
