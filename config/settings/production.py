@@ -162,7 +162,7 @@ LOGGING = {
 # SENTRY ERROR LOGGING
 sentry_env = env("SENTRY_ENV", default="production")
 sentry_sdk.init(
-    name=sentry_env,
+    environment=sentry_env,
     dsn="https://9a128799176749428da3267dd8980c39@o4504686058930176.ingest.sentry.io/4504798109564928",
     # Set traces_sample_rate to 1.0 to capture 100%
     # of transactions for performance monitoring.
