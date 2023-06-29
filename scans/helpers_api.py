@@ -24,21 +24,29 @@ def process_scans(request):
         """step one: convert terminal data to scan records"""
         for scan in for_processing["data_from_terminal"]:
             # changed to update_or_create to prevent two scans with same scan_id
+            defaults = scan["attributes"]
+            defaults.update({"batch_id": batch_id, "scan_id": scan["id"]})
 
             try:
-                Scan.objects.get(scan_id=scan["id"])
+                existing = Scan.objects.get(scan_id=scan["id"])
+                existing.update(**defaults)
                 continue
                 # if you find a scan matching this scan id, do nothing
 
             except Scan.DoesNotExist:
-                defaults = scan["attributes"]
-                defaults.update({"batch_id": batch_id, "scan_id": scan["id"]})
-
                 # create the scan record
                 ############################################################
                 Scan.objects.update_or_create(**defaults)
                 ############################################################
                 continue
+
+            except Scan.MultipleObjectsReturned:
+                # multiple scans with same id is a big error and causes problems for this thing
+                # and because the terminal is expectina  response for each scan id -- we can't just
+                # ignore the scan if the scan_id exists already
+                # so we are going to remove all the scans that are already in there, then create a fresh one
+                Scan.objects.filter(scan_id=scan["id"]).delete()
+                Scan.objects.update_or_create(**defaults)
 
             except ValueError:
                 continue
