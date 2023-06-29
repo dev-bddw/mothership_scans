@@ -11,7 +11,7 @@ from .time_convert import return_unix
 
 def process_scans(request):
 
-    batch_id = random.randint(0, 10000)
+    batch_id = random.randint(0, 100000000)
 
     for_processing = {
         "batch_id": batch_id,
