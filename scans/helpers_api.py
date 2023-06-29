@@ -23,10 +23,11 @@ def process_scans(request):
     def create_scans():
         """step one: convert terminal data to scan records"""
         for scan in for_processing["data_from_terminal"]:
+            # changed to update_or_create to prevent two scans with same scan_id
             try:
                 defaults = scan["attributes"]
                 defaults.update({"batch_id": batch_id, "scan_id": scan["id"]})
-                Scan(**defaults).save()
+                Scan.objects.update_or_create(scan_id=scan["id"], **defaults).save()
             except ValueError:
                 continue
 
