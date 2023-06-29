@@ -27,7 +27,12 @@ def process_scans(request):
             try:
                 defaults = scan["attributes"]
                 defaults.update({"batch_id": batch_id})
-                Scan.objects.update_or_create(scan_id=scan["id"], **defaults).save()
+
+                # create the scan record
+                ############################################################
+                Scan.objects.update_or_create(scan_id=scan["id"], **defaults)
+                ############################################################
+
             except ValueError:
                 continue
 
