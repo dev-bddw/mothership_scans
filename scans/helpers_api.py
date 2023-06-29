@@ -28,8 +28,10 @@ def process_scans(request):
             defaults.update({"batch_id": batch_id, "scan_id": scan["id"]})
 
             try:
-                existing = Scan.objects.filter(scan_id=scan["id"])
-                existing.update(**defaults)
+                existing = Scan.objects.get(scan_id=scan["id"])
+                existing.batch_id = batch_id
+                existing.save()
+
                 continue
                 # if you find a scan matching this scan id, do nothing
 
