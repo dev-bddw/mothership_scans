@@ -24,14 +24,21 @@ def process_scans(request):
         """step one: convert terminal data to scan records"""
         for scan in for_processing["data_from_terminal"]:
             # changed to update_or_create to prevent two scans with same scan_id
+
             try:
+                Scan.objects.get(scan_id=scan["id"])
+                continue
+                # if you find a scan matching this scan id, do nothing
+
+            except Scan.DoesNotExist:
                 defaults = scan["attributes"]
-                defaults.update({"batch_id": batch_id})
+                defaults.update({"batch_id": batch_id, "scan_id": scan["id"]})
 
                 # create the scan record
                 ############################################################
-                Scan.objects.update_or_create(scan_id=scan["id"], **defaults)
+                Scan.objects.update_or_create(**defaults)
                 ############################################################
+                continue
 
             except ValueError:
                 continue
