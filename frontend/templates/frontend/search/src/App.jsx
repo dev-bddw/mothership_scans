@@ -2,39 +2,9 @@ import {useRef, useState, useEffect} from 'react'
 
 function App() {
 
-  const [loading, setLoading] = useState(CONTEXT.scans)
-  const [progress, setProgress] = useState(0)
-
-  useEffect( () => {
-    setTimeout( () => {
-        setProgress(100)
-    }, 1 )
-  }, []
-  )
-
-  useEffect( () => {
-    setTimeout( () => {
-        setLoading(false)
-    }, 1500 )
-  }, []
-  )
-
-  function loading_widget() {
-    return (
-        <div className="relative pt-1">
-          <div className="overflow-hidden h-2 mb-4 text-xs flex rounded bg-gray-200">
-            <div style={{ width: `${progress}%` }} className="transition-all ease-out duration-1000 shadow-none flex flex-col text-center whitespace-nowrap text-white justify-center bg-gray-900"></div>
-          </div>
-        </div>
-    )
-  }
-
-
   return(
     <div>
-    { loading ? loading_widget() :
       <Search/>
-    }
     </div>
   )
 }
@@ -55,6 +25,7 @@ function Search() {
     setSearch(event.target.value)
   }
 	const isMounted = useRef(false)
+	const total_scans = useRef(CONTEXT.scans.length)
   const is_empty = scans.length == 0
 
 
@@ -111,7 +82,7 @@ function Search() {
               <input style={{'width': '500px'}} onChange={ (event)=> onChangeHandler(event)} value={search} type="search" id="default-search" className="p-2 pl-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500" placeholder="Search scans by sku, tracking, scan id" required/>
           </div>
       </form>
-      <div className="text-start py-3 text-gray-500 text-sm">Displaying latest 1000 of {scans.length} results...</div>
+      <div className="text-start py-3 text-gray-500 text-sm">Displaying {scans.length} of {total_scans.current} results...</div>
       <div className="relative overflow-x-auto shadow-md sm:rounded-lg">
           <table className="border rounded text-sm text-left text-gray-500">
               <thead className="text-xs text-gray-400 uppercase bg-gray-50">
