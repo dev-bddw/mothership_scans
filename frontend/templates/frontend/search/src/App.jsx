@@ -2,6 +2,45 @@ import {useRef, useState, useEffect} from 'react'
 
 function App() {
 
+  const [loading, setLoading] = useState(CONTEXT.scans)
+  const [progress, setProgress] = useState(0)
+
+  useEffect( () => {
+    setTimeout( () => {
+        setProgress(100)
+    }, 1 )
+  }, []
+  )
+
+  useEffect( () => {
+    setTimeout( () => {
+        setLoading(false)
+    }, 1500 )
+  }, []
+  )
+
+  function loading_widget() {
+    return (
+        <div className="relative pt-1">
+          <div className="overflow-hidden h-2 mb-4 text-xs flex rounded bg-gray-200">
+            <div style={{ width: `${progress}%` }} className="transition-all ease-out duration-1000 shadow-none flex flex-col text-center whitespace-nowrap text-white justify-center bg-gray-900"></div>
+          </div>
+        </div>
+    )
+  }
+
+
+  return(
+    <div>
+    { loading ? loading_widget() :
+      <Search/>
+    }
+    </div>
+  )
+}
+
+function Search() {
+
   // ATTENTION
   // this app is the frontend search bddwscans.com
   // ATTENTION
@@ -15,9 +54,11 @@ function App() {
 	const isMounted = useRef(false)
   const is_empty = scans.length == 0
 
+
+
   // if search change, wait a moment, send data to django
   useEffect(() => {
-    const delayDebounceFn = setTimeout(() => {
+    const delayDebounceFn = setTimeout( () => {
 			if (isMounted.current) {
 			  SEARCH()
 			} else {
@@ -51,15 +92,12 @@ function App() {
 
   return (
     <div className="w-full">
-
     <div style={{'margin-bottom': '40px'}} className="heading grid grid-cols-1 text-center">
         <div className="text-gray-800" style={{'font-size': '50px'}}>
           BDDW SCANS
         </div>
-        <a href='/csv/export-latest' className={'py-2 hover:underline'} style={{'font-size': '14px'}}>CSV LAST UNIQUE BY TN</a>
         <div className={'underline'} style={{'font-size': '20px'}}>ALL SCANS DISPLAY EST TIME</div>
       </div>
-
       <div className="grid grid cols-1 justify-center">
       <form>
           <label for="default-search" className="mb-2 text-sm font-medium text-gray-900 sr-only dark:text-white">Search</label>
