@@ -45,8 +45,11 @@ function Search() {
   // this app is the frontend search bddwscans.com
   // ATTENTION
 
+
+  // experient : what's causing the big dealy? is it rendering?
+
   const [search, setSearch] = useState('')
-  const [scans, setScans] = useState(CONTEXT.scans)
+  const [scans, setScans] = useState(CONTEXT.scans.slice(0, 1000))
 
   function onChangeHandler(event) {
     setSearch(event.target.value)
@@ -108,7 +111,7 @@ function Search() {
               <input style={{'width': '500px'}} onChange={ (event)=> onChangeHandler(event)} value={search} type="search" id="default-search" className="p-2 pl-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500" placeholder="Search scans by sku, tracking, scan id" required/>
           </div>
       </form>
-      <div className="text-start py-3 text-gray-500 text-sm">Displaying {scans.length} results...</div>
+      <div className="text-start py-3 text-gray-500 text-sm">Displaying latest 1000 of {scans.length} results...</div>
       <div className="relative overflow-x-auto shadow-md sm:rounded-lg">
           <table className="border rounded text-sm text-left text-gray-500">
               <thead className="text-xs text-gray-400 uppercase bg-gray-50">
