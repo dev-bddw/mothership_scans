@@ -314,7 +314,7 @@ SPECTACULAR_SETTINGS = {
 # BIN API SETTINGS
 
 BIN_API_ENDPOINT = env(
-    "BIN_API_ENDPOINT", default="https://bddw.styleexpo.com/api/v1/products/"
+    "BIN_API_ENDPOINT", default="https://bddwphp.styleexpo.com/api/v1/products/"
 )
 BIN_KEY = env("BIN_KEY", default=None)
 

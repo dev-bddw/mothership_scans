@@ -97,7 +97,9 @@ def process_scans(request):
         headers["Authorization"] = "Bearer {}".format(settings.BIN_KEY)
 
         # send request
+        print("sending to the bin:")
         print(json.dumps(for_processing["bin_request_body"]))
+
         response = requests.patch(
             settings.BIN_API_ENDPOINT,
             data=json.dumps(for_processing["bin_request_body"]),
@@ -108,52 +110,70 @@ def process_scans(request):
 
         if response.status_code == 200:
 
-            if response.json() == {"errors": []}:
+            try:
+                # turn the response body (stringified json) into a python dictionary
+                bin_response = response.json()
 
-                # bin says everything updated correctly
-                process_result = "BIN UPDATED WITH NO ERRORS"
+                if bin_response == {"errors": []}:
 
-                # mark everything a success
-                Scan.objects.filter(batch_id=batch_id).update(bin_success=True)
+                    # bin says everything updated correctly
+                    process_result = "BIN UPDATED WITH NO ERRORS"
 
-                # create success objects quick
+                    # mark everything a success
+                    Scan.objects.filter(batch_id=batch_id).update(bin_success=True)
+
+                    # create success objects quick
+                    [
+                        Success.objects.create(scan=x, batch_id=batch_id)
+                        for x in Scan.objects.filter(batch_id=batch_id)
+                    ]
+
+                else:
+
+                    process_result = "BIN REACHED WITH ERRORS"
+
+                    # mark all the  scan success (first)
+                    Scan.objects.filter(batch_id=batch_id).update(bin_success=True)
+
+                    # then go back through and marked the ones failed that failed
+                    [
+                        Scan.objects.filter(
+                            scan_id=str(y["source"]["attributes"]["scan_id"])
+                        ).update(bin_success=False)
+                        for y in bin_response["errors"]
+                    ]
+
+                    # and now create Fail records for the failed scans
+                    for y in bin_response["errors"]:
+                        # for each error in the error response lookup the failed scan by ID
+                        # that comes back from the bin
+                        this_scan = Scan.objects.filter(
+                            scan_id=str(y["source"]["attributes"]["scan_id"])
+                        ).first()
+
+                        # create a failed scan record, fk to the scan itself
+                        Fail.objects.create(
+                            scan=this_scan,
+                            batch_id=batch_id,
+                            title=y["title"],
+                            detail=y["detail"],
+                        )
+
+            except json.JSONDecodeError:
+                # the bin responded, but it wasnt wasn't valid json
+                process_result = "THERE WAS AS ERROR DECODING THE BIN RESPONSE."
+                # we have to assume the scans failed
+                Scan.objects.filter(batch_id=batch_id).update(bin_succes=False)
+                # create fail records
                 [
-                    Success.objects.create(scan=x, batch_id=batch_id)
+                    Fail.objects.create(
+                        scan=x,
+                        batch_id=batch_id,
+                        title="DECODE ERROR",
+                        detail=process_result,
+                    )
                     for x in Scan.objects.filter(batch_id=batch_id)
                 ]
-
-            else:
-
-                process_result = "BIN REACHED WITH ERRORS"
-
-                r = response.json()
-
-                # mark all the  scan success (first)
-                Scan.objects.filter(batch_id=batch_id).update(bin_success=True)
-
-                # then go back through and marked the ones failed that failed
-                [
-                    Scan.objects.filter(
-                        scan_id=str(y["source"]["attributes"]["scan_id"])
-                    ).update(bin_success=False)
-                    for y in r["errors"]
-                ]
-
-                # and now create Fail records for the failed scans
-                for y in r["errors"]:
-                    # for each error in the error response lookup the failed scan by ID
-                    # that comes back from the bin
-                    this_scan = Scan.objects.filter(
-                        scan_id=str(y["source"]["attributes"]["scan_id"])
-                    ).first()
-
-                    # create a failed scan record, fk to the scan itself
-                    Fail.objects.create(
-                        scan=this_scan,
-                        batch_id=batch_id,
-                        title=y["title"],
-                        detail=y["detail"],
-                    )
 
         else:
             process_result = "BIN UNREACHABLE"
@@ -165,6 +185,7 @@ def process_scans(request):
                 )
                 for x in Scan.objects.filter(batch_id=batch_id)
             ]
+
         print(process_result)
 
     create_scans()
