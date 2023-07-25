@@ -163,7 +163,7 @@ def process_scans(request):
                 # the bin responded, but it wasnt wasn't valid json
                 process_result = "THERE WAS AS ERROR DECODING THE BIN RESPONSE."
                 # we have to assume the scans failed
-                Scan.objects.filter(batch_id=batch_id).update(bin_succes=False)
+                Scan.objects.filter(batch_id=batch_id).update(bin_success=False)
                 # create fail records
                 [
                     Fail.objects.create(
