@@ -73,7 +73,6 @@ function Search() {
         <div className={'underline'} style={{'font-size': '20px'}}>ALL SCANS DISPLAY EST TIME</div>
       </div>
       <div className="grid grid cols-1 justify-center">
-      <form>
           <label for="default-search" className="mb-2 text-sm font-medium text-gray-900 sr-only dark:text-white">Search</label>
           <div className="relative">
               <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
@@ -81,7 +80,6 @@ function Search() {
               </div>
               <input style={{'width': '500px'}} onChange={ (event)=> onChangeHandler(event)} value={search} type="search" id="default-search" className="p-2 pl-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500" placeholder="Search scans by sku, tracking, scan id" required/>
           </div>
-      </form>
       <div className="text-start py-3 text-gray-500 text-sm">Displaying {scans.length} of {total_scans.current} scans...</div>
       <div className="relative overflow-x-auto shadow-md sm:rounded-lg">
           <table className="border rounded text-sm text-left text-gray-500">
