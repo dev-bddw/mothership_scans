@@ -22,9 +22,17 @@ function Search() {
   const is_empty = scans.length == 0
 
   function match(scan) {
+//    .filter(i => (i && i.user && i.user.includes(this.searchUser)))
+
     return (
-      scan.sku.includes(search) || scan.location.includes(search) || scan.scan_id.includes(search) || scan.tracking.includes(search)
-      || scan.sku.includes(search.toUpperCase()) || scan.location.includes(search.toUpperCase()) || scan.scan_id.includes(search.toUpperCase()) || scan.tracking.includes(search.toUpperCase())
+      ( scan && scan.sku && scan.sku.includes(search) )
+      || (scan && scan.location && scan.location.includes(search))
+      || (scan && scan.scan_id && scan.scan_id.includes(search) )
+      || (scan && scan.tracking && scan.tracking.includes(search))
+      || (scan && scan.sku && scan.sku.includes(search.toUpperCase()) )
+      || (scan && scan.location && scan.location.includes(search.toUpperCase()))
+      || (scan && scan.scan_id && scan.scan_id.includes(search.toUpperCase()))
+      || (scan && scan.tracking && scan.tracking.includes(search.toUpperCase()))
     )
   }
 
