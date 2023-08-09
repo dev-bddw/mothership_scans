@@ -11,15 +11,8 @@ function App() {
 
 function Search() {
 
-  // ATTENTION
-  // this app is the frontend search bddwscans.com
-  // ATTENTION
-
-
-  // experient : what's causing the big dealy? is it rendering?
-
   const [search, setSearch] = useState('')
-  const [scans, setScans] = useState(CONTEXT.scans.slice(0, 1000))
+  const [scans, setScans] = useState(CONTEXT.scans)
 
   function onChangeHandler(event) {
     setSearch(event.target.value)
@@ -28,13 +21,20 @@ function Search() {
 	const total_scans = useRef(CONTEXT.scans.length)
   const is_empty = scans.length == 0
 
+  function match(scan) {
+    return (
+      scan.sku.includes(search) || scan.location.includes(search) || scan.scan_id.includes(search) || scan.tracking.includes(search)
+      || scan.sku.includes(search.toUpperCase()) || scan.location.includes(search.toUpperCase()) || scan.scan_id.includes(search.toUpperCase()) || scan.tracking.includes(search.toUpperCase())
+    )
+  }
 
 
-  // if search change, wait a moment, send data to django
   useEffect(() => {
     const delayDebounceFn = setTimeout( () => {
 			if (isMounted.current) {
-			  SEARCH()
+			  ///SEARCH()
+        // filter scans by search
+        setScans( CONTEXT.scans.filter( (scan) => match(scan) ) )
 			} else {
 					isMounted.current = true
 				}
@@ -42,27 +42,28 @@ function Search() {
 		return( () => clearTimeout(delayDebounceFn) )
   }, [search])
 
-  // function for making api call
-	const SEARCH = () => {
-		fetch(CONTEXT.search_api, {
-			credentials: 'include',
-			mode: 'same-origin',
-			method: "POST",
-			headers: {
-		    "Content-Type": "application/json",
-				"Accept": 'application/json',
-				'Authorization': `Token ${CONTEXT.auth_token}`,
-				'X-CSRFToken': CONTEXT.csrf_token
-        },
-			body: JSON.stringify( {'data': { search } } ),
-					})
-						.then(response => response.json())
-						.then(data => {
-              setScans(data.data)
-							console.log(data.data);
-						})
-	}
-
+//  DEPRECATED
+ //  // function for making api call
+	// const SEARCH = () => {
+	// 	fetch(CONTEXT.search_api, {
+	// 		credentials: 'include',
+	// 		mode: 'same-origin',
+	// 		method: "POST",
+	// 		headers: {
+	// 	    "Content-Type": "application/json",
+	// 			"Accept": 'application/json',
+	// 			'Authorization': `Token ${CONTEXT.auth_token}`,
+	// 			'X-CSRFToken': CONTEXT.csrf_token
+ //        },
+	// 		body: JSON.stringify( {'data': { search } } ),
+	// 				})
+	// 					.then(response => response.json())
+	// 					.then(data => {
+ //              setScans(data.data)
+	// 						console.log(data.data);
+	// 					})
+	// }
+	//
 
   return (
     <div className="w-full">
