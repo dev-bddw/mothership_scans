@@ -28,7 +28,7 @@ certificatesResolvers:
 http:
   routers:
     web-secure-router:
-      rule: "Host(`test.bddwscans.com`) || Host(`www.test.bddwscans.com`)"
+      rule: "Host(`test.rlfscans.com`) || Host(`www.test.rlfscans.com`)"
       entryPoints:
         - web-secure
       middlewares:
