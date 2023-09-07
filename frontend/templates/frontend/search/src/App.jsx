@@ -77,7 +77,7 @@ function Search() {
     <div className="w-full">
     <div style={{'margin-bottom': '40px'}} className="heading grid grid-cols-1 text-center">
         <div className="text-gray-800" style={{'font-size': '50px'}}>
-          BDDW SCANS
+          RLF SCANS
         </div>
         <div className={'underline'} style={{'font-size': '20px'}}>ALL SCANS DISPLAY EST TIME</div>
       </div>

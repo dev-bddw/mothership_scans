@@ -4,7 +4,7 @@
   <head>
     <meta charset="utf-8">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
-    <title>{% block title %}bddw sales tools{% endblock title %}</title>
+    <title>{% block title %}RLF SCANS{% endblock title %}</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     {% block css %}
 
@@ -38,7 +38,7 @@
   style="text-transform: uppercase; font-family: 'Source Sans Pro', sans-serif; letter-spacing: 0.05em; font-size: 12px; color: #8B8A86">
   <div style="padding-top: 15; padding-bottom: 15; background-color: #f8f9fa!important;">
 	  <ul style="font-size: 16px;">
-      <li style="color: black;  padding-left: 48px; padding-right: 30px; display: inline;"><a href="{% url 'frontend:search' %}">BDDW SCANS</li>
+      <li style="color: black;  padding-left: 48px; padding-right: 30px; display: inline;"><a href="{% url 'frontend:search' %}">RLF SCANS</li>
       {% if user.is_authenticated %}
       <li style="color: black; padding-right: 30px; display: inline;"><a href="{% url 'frontend:search' %}">ALL SCANS</a></li>
       <li style="color: black; padding-right: 30px; display: inline;"><a href="{% url "failed-list" %}">FAILED</a></li>

@@ -48,12 +48,12 @@
   <div style="padding-top: 15; padding-bottom: 15; background-color: #f8f9fa!important;">
 	  <ul style="font-size: 16px;">
       {% if user.is_authenticated %}
-      <li style="color: black;  padding-left: 48px; padding-right: 30px; display: inline;"><a href="{% url 'frontend:search' %}">BDDW SCANS</li>
+      <li style="color: black;  padding-left: 48px; padding-right: 30px; display: inline;"><a href="{% url 'frontend:search' %}">RLF SCANS</li>
       <li style="color: black; padding-right: 30px; display: inline;"><a href="{% url 'frontend:search' %}">ALL SCANS</a></li>
       <li style="color: black; padding-right: 30px; display: inline;"><a href="{% url "failed-list" %}">FAILED</a></li>
       <li style="color: black; padding-right: 30px; display: inline;"><a href="{% url 'account_logout' %}">SIGN OUT</a></li>
       {% else %}
-      <li style="color: black; padding-left: 48px; padding-right: 30px; display: inline;"><a href="{% url 'frontend:search' %}">BDDW SCANS</li>
+      <li style="color: black; padding-left: 48px; padding-right: 30px; display: inline;"><a href="{% url 'frontend:search' %}">RLF SCANS</li>
       <li style="color: black; padding-right: 30px; display: inline;"><a href="{% url 'account_login' %}">SIGN IN</a></li>
       {% endif %}
 	  <ul>
