@@ -154,6 +154,7 @@ class Scan(models.Model):
             "501": "NEW YORK",
             "601": "LONDON - MOUNT",
             "602": "LONDON - VYNER",
+            "701": "LA",
         }
 
         return locations[str(self.location)]
