@@ -158,7 +158,7 @@ LOGGING = {
             "level": "DEBUG",
             "class": "watchtower.CloudWatchLogHandler",
             "boto3_client": logger_client,
-            "log_group": "bddw-prices",
+            "log_group": "mothership-scans",
             "stream_name": "staging",
             "create_log_group": True,
             "create_log_stream": True,
@@ -172,7 +172,7 @@ LOGGING = {
     "loggers": {
         # Use this logger to send data just to Cloudwatch
         "watchtower": {
-            "level": "INFO",
+            "level": "DEBUT",
             "handlers": ["watchtower"],
             "propogate": False,
         }
