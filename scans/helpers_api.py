@@ -24,7 +24,9 @@ def process_scans(request):
     }
 
     logger.info(
-        {"msg": f"RECEIVED POST TERMINAL DATA: {for_processing['data_from_terminal']}"}
+        {
+            "msg": f"RECEIVED TERMINAL DATA (BATCH {batch_id}): {for_processing['data_from_terminal']}"
+        }
     )
 
     def create_scans():
@@ -169,6 +171,7 @@ def process_scans(request):
             except json.JSONDecodeError:
                 # the bin responded, but it wasnt wasn't valid json
                 process_result = "THERE WAS AS ERROR DECODING THE BIN RESPONSE."
+
                 # we have to assume the scans failed
                 Scan.objects.filter(batch_id=batch_id).update(bin_success=False)
                 # create fail records
@@ -194,6 +197,7 @@ def process_scans(request):
             ]
 
         print(process_result)
+        logger.info({"msg": f"{process_result} for {batch_id}"})
 
     create_scans()
     create_terminal_response()
