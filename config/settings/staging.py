@@ -172,7 +172,7 @@ LOGGING = {
     "loggers": {
         # Use this logger to send data just to Cloudwatch
         "watchtower": {
-            "level": "DEBUT",
+            "level": "DEBUG",
             "handlers": ["watchtower"],
             "propogate": False,
         }
