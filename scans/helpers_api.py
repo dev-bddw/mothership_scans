@@ -1,4 +1,5 @@
 import json
+import logging
 import random
 
 import requests
@@ -7,6 +8,8 @@ from requests.structures import CaseInsensitiveDict
 
 from .models import Fail, Scan, Success
 from .time_convert import return_unix
+
+logger = logging.getLogger("watchtower")
 
 
 def process_scans(request):
@@ -19,6 +22,10 @@ def process_scans(request):
         "terminal_response": {"data": []},
         "bin_request_body": {"data": []},
     }
+
+    logger.info(
+        {"msg": f"RECEIVED POST TERMINAL DATA: {for_processing['data_from_terminal']}"}
+    )
 
     def create_scans():
         """step one: convert terminal data to scan records"""
