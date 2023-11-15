@@ -1,5 +1,5 @@
 import sentry_sdk
-from boto3.sessions import Session
+from boto3.session import Session
 
 from .base import *  # noqa
 from .base import env
