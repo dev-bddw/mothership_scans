@@ -106,8 +106,14 @@ def process_scans(request):
         headers["Authorization"] = "Bearer {}".format(settings.BIN_KEY)
 
         # send request
-        print("sending to the bin:")
-        print(json.dumps(for_processing["bin_request_body"]))
+        # print("sending to the bin:")
+        # print(json.dumps(for_processing["bin_request_body"]))
+
+        logger.info(
+            {
+                "msg": f"SENDING TO BIN (BATCH {batch_id}) { json.dumps(for_processing['bin_request_body'])}"
+            }
+        )
 
         response = requests.patch(
             settings.BIN_API_ENDPOINT,
@@ -197,7 +203,11 @@ def process_scans(request):
             ]
 
         print(process_result)
-        logger.info({"msg": f"{process_result} for {batch_id}"})
+        logger.info(
+            {
+                "msg": f"{process_result} (BATCH {batch_id}) -- BIN RESPONSE: {response.json()}"
+            }
+        )
 
     create_scans()
     create_terminal_response()
