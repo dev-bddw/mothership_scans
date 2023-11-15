@@ -1,4 +1,5 @@
 import sentry_sdk
+from boto3.sessions import Session
 
 from .base import *  # noqa
 from .base import env
@@ -128,36 +129,56 @@ ANYMAIL = {
 # https://github.com/antonagestam/collectfast#installation
 INSTALLED_APPS = ["collectfast"] + INSTALLED_APPS  # noqa F405
 
-# LOGGING
-# ------------------------------------------------------------------------------
-# https://docs.djangoproject.com/en/dev/ref/settings/#logging
-# See https://docs.djangoproject.com/en/dev/topics/logging for
-# more details on how to customize your logging configuration.
-# A sample logging configuration. The only tangible logging
-# performed by this configuration is to send an email to
-# the site admins on every HTTP 500 error when DEBUG=False.
+# AWS CLOUD WATCH LOGGING
+# --------------------------------------------------------------------------------
+
+CLOUDWATCH_AWS_ID = env("CLOUDWATCH_AWS_ID")
+CLOUDWATCH_AWS_KEY = env("CLOUDWATCH_AWS_KEY")
+AWS_DEFAULT_REGION = env("AWS_DEFAULT_REGION", default="us-east-1")
+
+boto3_session = Session(
+    aws_access_key_id=CLOUDWATCH_AWS_ID,
+    aws_secret_access_key=CLOUDWATCH_AWS_KEY,
+    region_name=AWS_DEFAULT_REGION,
+)
+
+logger_client = boto3_session.client("logs")
+
 LOGGING = {
     "version": 1,
     "disable_existing_loggers": False,
-    "filters": {"require_debug_false": {"()": "django.utils.log.RequireDebugFalse"}},
     "formatters": {
-        "file": {"format": "%(asctime)s %(name)-12s %(levelname)-8s %(message)s"}
+        "aws": {
+            "format": "%(asctime)s [%(levelname)-8s] %(message)s [%(pathname)s:%(lineno)d]",
+            "datefmt": "%Y-%m-%d %H:%M:%S",
+        },
     },
     "handlers": {
-        "file": {
-            "level": "WARNING",
-            "class": "logging.FileHandler",
-            "filename": "/app/mother_scans.log",
-            "formatter": "file",
+        "watchtower": {
+            "level": "DEBUG",
+            "class": "watchtower.CloudWatchLogHandler",
+            "boto3_client": logger_client,
+            "log_group": "mothership-scans",
+            "stream_name": "production",
+            "create_log_group": True,
+            "create_log_stream": True,
+            "formatter": "aws",
+        },
+        "console": {
+            "class": "logging.StreamHandler",
+            "formatter": "aws",
         },
     },
     "loggers": {
-        "django": {
-            "handlers": ["file"],
-            "level": "WARNING",
-        },
+        # Use this logger to send data just to Cloudwatch
+        "watchtower": {
+            "level": "DEBUG",
+            "handlers": ["watchtower"],
+            "propogate": False,
+        }
     },
 }
+
 
 # SENTRY ERROR LOGGING
 sentry_env = env("SENTRY_ENV", default="production")
