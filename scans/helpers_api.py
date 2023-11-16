@@ -215,7 +215,7 @@ def process_scans(request):
             ]
             logger.info(
                 {
-                    "msg": f"{process_result} (BATCH {batch_id}) -- BIN RESPONSE: UNREACHABLE"
+                    "msg": f"{process_result} (BATCH {batch_id}) -- BIN RESPONSE: BIN RETURNED NON 200 RESPONSE"
                 }
             )
 
