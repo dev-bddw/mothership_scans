@@ -174,6 +174,12 @@ def process_scans(request):
                             detail=y["detail"],
                         )
 
+                logger.info(
+                    {
+                        "msg": f"{process_result} (BATCH {batch_id}) -- BIN RESPONSE: {response.json()}"
+                    }
+                )
+
             except json.JSONDecodeError:
                 # the bin responded, but it wasnt wasn't valid json
                 process_result = "THERE WAS AS ERROR DECODING THE BIN RESPONSE."
@@ -191,6 +197,12 @@ def process_scans(request):
                     for x in Scan.objects.filter(batch_id=batch_id)
                 ]
 
+                logger.info(
+                    {
+                        "msg": f"{process_result} (BATCH {batch_id}) -- BIN RESPONSE: {response}"
+                    }
+                )
+
         else:
             process_result = "BIN UNREACHABLE"
             [
@@ -201,13 +213,11 @@ def process_scans(request):
                 )
                 for x in Scan.objects.filter(batch_id=batch_id)
             ]
-
-        print(process_result)
-        logger.info(
-            {
-                "msg": f"{process_result} (BATCH {batch_id}) -- BIN RESPONSE: {response.json()}"
-            }
-        )
+            logger.info(
+                {
+                    "msg": f"{process_result} (BATCH {batch_id}) -- BIN RESPONSE: UNREACHABLE"
+                }
+            )
 
     create_scans()
     create_terminal_response()
