@@ -29,11 +29,19 @@ def process_scans(request):
         }
     )
 
+    valid_scan_fields = {f.name for f in Scan._meta.get_fields()}
+
     def create_scans():
         """step one: convert terminal data to scan records"""
         for scan in for_processing["data_from_terminal"]:
             # changed to update_or_create to prevent two scans with same scan_id
-            defaults = scan["attributes"]
+            # only keep attributes that are real Scan fields -- an unexpected
+            # one here used to raise an uncaught TypeError and silently kill
+            # the whole batch (watchtower only logs what we log explicitly,
+            # not unhandled exceptions, so this failed with zero trace)
+            defaults = {
+                k: v for k, v in scan["attributes"].items() if k in valid_scan_fields
+            }
             defaults.update({"batch_id": batch_id, "scan_id": scan["id"]})
 
             try:
@@ -84,6 +92,9 @@ def process_scans(request):
                     {
                         "type": "items",
                         "id": scan.tracking,
+                        # deliberately an explicit field list, not scan.__dict__ or **vars(scan) --
+                        # notes/destination_type exist on Scan but the Bin API hasn't confirmed it
+                        # can accept them, so they must stay out of this payload until that's checked
                         "attributes": {
                             "sku": scan.sku,
                             "location": scan.readable_location(),

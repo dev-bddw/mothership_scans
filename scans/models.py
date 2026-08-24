@@ -136,6 +136,15 @@ class Scan(models.Model):
 
     batch_id = models.CharField(max_length=10, default=None, blank=True, null=True)
 
+    notes = models.TextField(blank=True, null=True)
+
+    destination_type = models.CharField(
+        max_length=20,
+        choices=[("internal", "Internal"), ("external", "External")],
+        blank=True,
+        null=True,
+    )
+
     class Meta:
         ordering = ["-time_scan"]
 
