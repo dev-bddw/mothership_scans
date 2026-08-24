@@ -190,6 +190,8 @@ class Scan(models.Model):
             "time_upload": convert_eastern(self.time_upload),
             "bin_success": self.bin_success,
             "batch_id": self.batch_id,
+            "notes": self.notes,
+            "destination_type": self.destination_type,
         }
 
     def has_tracking(self):

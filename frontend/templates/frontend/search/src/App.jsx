@@ -97,6 +97,8 @@ function Search() {
                 <th className="py-2 px-3">sku</th>
                 <th className="py-2 px-3">tracking</th>
                 <th className="py-2 px-3">location</th>
+                <th className="py-2 px-3">notes</th>
+                <th className="py-2 px-3">destination</th>
                 <th className="py-2 px-3">time scanned</th>
                 <th className="py-2 px-3">time uploaded</th>
                 <th className="py-2 px-3">scan id</th>
@@ -109,6 +111,8 @@ function Search() {
                 <td style={{width: '170px'}} className={'py-2 px-3'}>Returned None</td>
                 <td style={{width: '170px'}} className={'py-2 px-3'}></td>
                 <td style={{width: '170px'}} className={'py-2 px-3'}></td>
+                <td style={{width: '200px'}} className={'py-2 px-3'}></td>
+                <td style={{width: '120px'}} className={'py-2 px-3'}></td>
                 <td style={{width: '200px'}} className={'py-2 px-3'}></td>
                 <td style={{width: '200px'}} className={'py-2 px-3'}></td>
                 <td style={{width: '370px'}} className={'py-2 px-3'}></td>
@@ -147,6 +151,8 @@ function ScanRow({scan, setSearch}) {
       <td style={{width: '170px'}} onClick={() => onClickHandler(scan.location)} className={'py-2 px-3'}>
         <div className={'cursor-pointer hover:underline'}>{scan.location}</div>
       </td>
+      <td style={{width: '200px'}} className={'py-2 px-3'}>{scan.notes}</td>
+      <td style={{width: '120px'}} className={'py-2 px-3'}>{scan.destination_type}</td>
       <td style={{width: '200px'}} className={'py-2 px-3'}>{scan.time_scan}</td>
       <td style={{width: '200px'}} className={'py-2 px-3'}>{scan.time_upload}</td>
       <td style={{width: '370px'}} onClick={() => onClickHandler(scan.scan_id)} className={'py-2 px-3'}>
