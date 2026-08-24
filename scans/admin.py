@@ -14,6 +14,15 @@ class FailAdmin(admin.ModelAdmin):
 
 
 class ScansAdmin(admin.ModelAdmin):
+    list_display = [
+        "sku",
+        "tracking",
+        "readable_location",
+        "notes",
+        "destination_type",
+        "time_scan",
+        "bin_success",
+    ]
     search_fields = ["sku", "tracking", "scan_id"]
     list_per_page = 100000
 
