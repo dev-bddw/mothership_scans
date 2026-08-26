@@ -145,6 +145,14 @@ class Scan(models.Model):
         null=True,
     )
 
+    # Free text, not a relation -- ScansWeb has real location/carrier
+    # records with ids, but Mothership doesn't know about either table, so
+    # this just holds whichever name applies (a location name for
+    # "internal", a carrier name for "external"). Null when the operator
+    # picked "Other" on ScansWeb without naming anything specific, or on an
+    # IN scan where destination_type is null too.
+    destination = models.TextField(blank=True, null=True)
+
     class Meta:
         ordering = ["-time_scan"]
 
@@ -192,6 +200,7 @@ class Scan(models.Model):
             "batch_id": self.batch_id,
             "notes": self.notes,
             "destination_type": self.destination_type,
+            "destination": self.destination,
         }
 
     def has_tracking(self):
