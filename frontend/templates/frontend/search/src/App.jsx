@@ -152,7 +152,7 @@ function ScanRow({scan, setSearch}) {
         <div className={'cursor-pointer hover:underline'}>{scan.location}</div>
       </td>
       <td style={{width: '200px'}} className={'py-2 px-3'}>{scan.notes}</td>
-      <td style={{width: '120px'}} className={'py-2 px-3'}>{scan.destination_type}</td>
+      <td style={{width: '120px'}} className={'py-2 px-3'}>{scan.destination ?? scan.destination_type}</td>
       <td style={{width: '200px'}} className={'py-2 px-3'}>{scan.time_scan}</td>
       <td style={{width: '200px'}} className={'py-2 px-3'}>{scan.time_upload}</td>
       <td style={{width: '370px'}} onClick={() => onClickHandler(scan.scan_id)} className={'py-2 px-3'}>

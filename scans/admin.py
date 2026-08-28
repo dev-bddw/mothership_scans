@@ -20,6 +20,7 @@ class ScansAdmin(admin.ModelAdmin):
         "readable_location",
         "notes",
         "destination_type",
+        "destination",
         "time_scan",
         "bin_success",
     ]
