@@ -78,6 +78,8 @@ class Fail(models.Model):
                     "attributes": {
                         "sku": self.scan.sku,
                         "location": self.scan.readable_location(),
+                        "destination": self.scan.destination,
+                        "notes": self.scan.notes,
                         "scan_id": self.scan.scan_id.__str__(),
                         "time_scan": return_unix(self.scan.time_scan),
                     },

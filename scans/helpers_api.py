@@ -92,12 +92,12 @@ def process_scans(request):
                     {
                         "type": "items",
                         "id": scan.tracking,
-                        # deliberately an explicit field list, not scan.__dict__ or **vars(scan) --
-                        # notes/destination_type exist on Scan but the Bin API hasn't confirmed it
-                        # can accept them, so they must stay out of this payload until that's checked
+                        # deliberately an explicit field list, not scan.__dict__ or **vars(scan)
                         "attributes": {
                             "sku": scan.sku,
                             "location": scan.readable_location(),
+                            "destination": scan.destination,
+                            "notes": scan.notes,
                             "scan_id": scan.scan_id.__str__(),
                             "time_scan": return_unix(scan.time_scan),
                         },
